@@ -415,7 +415,7 @@
 <li><strong>构建配置文件</strong>：配置文件用于配置算法各个组件的运行参数，大体上可以包含四个部分：datasets、models、schedules和runtime。完成相应模块的定义和注册后，在配置文件中配置好相应的运行参数，然后MMDetection就会通过<code>Registry</code>类读取并解析配置文件，完成模块的实例化。另外，配置文件可以通过<code>_base_</code>字段实现继承功能，以提高代码复用率。</li>
 <li><strong>训练和验证</strong>：在完成各模块的代码实现、模块的注册、配置文件的编写后，就可以使用<code>./tools/train.py</code>和<code>./tools/test.py</code>对模型进行训练和验证，不需要用户编写额外的代码。</li>
 </ul>
-<h4 id="1-3流程对比"><a href="#1-3流程对比" class="headerlink" title="1.3流程对比"></a>1.3流程对比</h4><p><img src="E:\blob\source\images\MMdetection\1.png"></p>
+<h4 id="1-3流程对比"><a href="#1-3流程对比" class="headerlink" title="1.3流程对比"></a>1.3流程对比</h4><p><img src="/./images/MMdetection%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1.png"></p>
 <h3 id="2-算法的实现流程"><a href="#2-算法的实现流程" class="headerlink" title="2.算法的实现流程"></a>2.算法的实现流程</h3><h4 id="2-1注册数据集"><a href="#2-1注册数据集" class="headerlink" title="2.1注册数据集"></a>2.1注册数据集</h4><p>​		定义自己的数据集时，需要新写一个继承<code>CustomDataset</code>的Dataset类，然后重写<code>load_annotations()</code>函数和<code>get_ann_info()</code>函数。官方文档上说，用户如果要使用<code>CustomDataset</code>，要将现有数据集转换成MMDetection兼容的格式(COCO格式或中间格式) 。但是仔细研究发现底层的代码并没有发现有这个限制，只要你的数据格式能和你实现的<code>load_annotations()</code>和<code>get_ann_info()</code>对应上即可。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">"""
 中间数据格式：
@@ -702,7 +702,7 @@ model <span class="token operator">=</span> ConfigDict<span class="token punctua
     runner<span class="token punctuation">.</span>run<span class="token punctuation">(</span>data_loaders<span class="token punctuation">,</span> cfg<span class="token punctuation">.</span>workflow<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>​		虽然官方<code>train.py</code>文件写的很长，但是把核心代码扒出来一看，其实都是我们在Pytorch中熟悉的操作。整个train.py的流程如下图所示。</p>
-<p><img src="E:\blob\source\images\MMdetection\2.png"></p>
+<p><img src="/./images/MMdetection%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/2.png"></p>
 <h5 id="2-4-2Runner类"><a href="#2-4-2Runner类" class="headerlink" title="2.4.2Runner类"></a>2.4.2Runner类</h5><p>​		Runner分为<strong>EpochBasedRunner</strong>和<strong>IterBasedRunner</strong>，顾名思义，前者以epoch的方式管理流程，后者以iter的方式管理流程，它们都是BaseRunner的子类。EpochBasedRunner和IterBasedRunner本身没有重写构造函数，直接继承了BaseRunner的构造函数：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">BaseRunner</span><span class="token punctuation">(</span>metaclass<span class="token operator">=</span>ABCMeta<span class="token punctuation">)</span><span class="token punctuation">:</span>
 	<span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>
@@ -765,7 +765,7 @@ model <span class="token operator">=</span> ConfigDict<span class="token punctua
     self<span class="token punctuation">.</span>outputs <span class="token operator">=</span> outputs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>​		<code>train()</code>和<code>val()</code>的核心函数是<code>run_iter()</code>，根据train_mode参数调用<code>model.train_step()</code>或<code>model.val_step()</code>，这两个函数最终都会指向我们自己模型的<code>forward()</code>函数，返回模型的前向推理结果（一般是Loss值）。Runner到我们自己的模型中间还会经过MMDataParallel、BaseDetector、SingleStageDetector(或TwoStageDetector)四个类，最终调用我们自己模型的<code>forward()</code>函数，执行推理过程。</p>
-<p><img src="E:\blob\source\images\MMdetection\3.png"></p>
+<p><img src="/./images/MMdetection%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/3.png"></p>
 <p>​		细心的同学可能会问，怎么从头到尾没看到梯度反传优化这一步骤？MMDetection的梯度优化是通过一个实现了<code>after_train_iter()</code>的Hook实现的，其优先级为ABOVE_NORMAL。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@HOOKS<span class="token punctuation">.</span>register_module</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">class</span> <span class="token class-name">OptimizerHook</span><span class="token punctuation">(</span>Hook<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -915,9 +915,9 @@ Initialize FPN256
 </ol>
 <h3 id="4-Hook机制"><a href="#4-Hook机制" class="headerlink" title="4.Hook机制"></a>4.Hook机制</h3><h4 id="4-1Hook类"><a href="#4-1Hook类" class="headerlink" title="4.1Hook类"></a>4.1Hook类</h4><p>​		MMDetection的整个算法过程就像一个黑盒子：给定输入后（配置文件），黑盒子就会吐出算法结果。整个过程封装度非常高，几乎不需要手写什么代码，但是我们如何在算法执行过程中加入自定义操作呢？这就是Hook机制的作用。</p>
 <p>​		简单来说，<strong>Hook可以理解为一种触发器，可以在程序预定义的位置执行预定义的函数</strong>。MMCV根据算法的生命周期预定义了6个可以插入自定义函数的位点，用户可以在每个位点自由地插入任意数量的函数操作，如下图所示：</p>
-<p><img src="E:\blob\source\images\MMdetection\4.png"></p>
+<p><img src="/./images/MMdetection%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/4.png"></p>
 <p>​		这6个位置基本涵盖了自定义操作可能出现的位置，MMCV已经实现了部分常用Hook，其中默认Hook不需要用户自行注册，通过配置文件配置对应的参数即可；定制Hook则需要用户在配置文件中手动配置<code>custom_hooks</code>字段进行注册。</p>
-<p><img src="E:\blob\source\images\MMdetection\5.png"></p>
+<p><img src="/./images/MMdetection%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/5.png"></p>
 <p>​		<code>Hook</code>类本身代码很少，只提供了预定义位置的接口函数，任何自定义的Hook都需要继承<code>Hook</code>类，然后根据需要重写对应的接口函数。比如检查点保存操作通常发生在每次迭代或epoch后，所以我们需要重写<code>after_train_iter</code>和<code>after_train_epoch</code>。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Hook</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">before_run</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> runner<span class="token punctuation">)</span><span class="token punctuation">:</span>
