@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>ROS创建项目流程</title>
+      <link href="/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/"/>
+      <url>/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/./images/ROS%E6%9E%B6%E6%9E%84/0.png"></p><p>​ROS中涉及的编程语言以C++和Python为主，ROS中的大多数程序两者都可以实现，同时，ROS中的程序即便使用不同的编程语言，实现流程也大致类似，以当前HelloWorld程序为例，实现流程大致如下：</p><blockquote><ol><li>先创建一个工作空间；</li><li>再创建一个功能包；</li><li>编辑源文件；</li><li>编辑配置文件；</li><li>编译并执行。</li></ol></blockquote><p>​上述流程中，C++和Python只是在步骤3和步骤4的实现细节上存在差异，其他流程基本一致。</p><h3 id="1-创建工作空间并初始化"><a href="#1-创建工作空间并初始化" class="headerlink" title="1. 创建工作空间并初始化"></a>1. 创建工作空间并初始化</h3><pre class="line-numbers language-none"><code class="language-none">mkdir -p 自定义空间名称&#x2F;srccd 自定义空间名称catkin_make<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>​上述命令，首先会创建一个工作空间以及一个 src 子目录，然后再进入工作空间调用 catkin_make命令编译。</p><h3 id="2-进入src创建ros包并添加依赖"><a href="#2-进入src创建ros包并添加依赖" class="headerlink" title="2. 进入src创建ros包并添加依赖"></a>2. 进入src创建ros包并添加依赖</h3><pre class="line-numbers language-none"><code class="language-none">cd srccatkin_create_pkg 自定义ROS包名 roscpp rospy std_msgs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>​上述命令，会在工作空间下生成一个功能包，该功能包依赖于 roscpp、rospy 与 std_msgs，其中roscpp是使用C++实现的库，而rospy则是使用python实现的库，std_msgs是标准消息库，创建ROS功能包时，一般都会依赖这三个库实现。</p><h3 id="3-进入ros包添加scripts目录并编辑python文件"><a href="#3-进入ros包添加scripts目录并编辑python文件" class="headerlink" title="3. 进入ros包添加scripts目录并编辑python文件"></a>3. 进入ros包添加scripts目录并编辑python文件</h3><pre class="line-numbers language-none"><code class="language-none">cd ros包mkdir scripts<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span><span class="token triple-quoted-string string">"""    Python 版 HelloWorld"""</span><span class="token keyword">import</span> rospy<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span>    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"Hello World!!!!"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h3 id="4-为python文件添加可执行权限"><a href="#4-为python文件添加可执行权限" class="headerlink" title="4. 为python文件添加可执行权限"></a>4. 为python文件添加可执行权限</h3><pre class="line-numbers language-none"><code class="language-none">chmod +x 自定义文件名.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="5-编辑ros包下的CmakeLists-txt文件"><a href="#5-编辑ros包下的CmakeLists-txt文件" class="headerlink" title="5. 编辑ros包下的CmakeLists.txt文件"></a>5. 编辑ros包下的CmakeLists.txt文件</h3><pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS scripts&#x2F;自定义文件名.py  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h3 id="6-进入工作空间目录并编译"><a href="#6-进入工作空间目录并编译" class="headerlink" title="6. 进入工作空间目录并编译"></a>6. 进入工作空间目录并编译</h3><pre class="line-numbers language-none"><code class="language-none">cd 自定义空间名称catkin_make<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><h3 id="7-启动并执行程序"><a href="#7-启动并执行程序" class="headerlink" title="7. 启动并执行程序"></a>7. 启动并执行程序</h3><p>​先启动roscore，这个是启动ros工作环境必须要执行的，值得注意的是该命令可以在任何路径执行，不会对后续命令产生负面影响。</p><pre class="line-numbers language-none"><code class="language-none">roscore<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>​再启动python文件，python文件的启动方式有两种，第一种是按照常规的python文件启动方式进行，当前理解是此种方式只是针对ros工作空间只有python文件进行通信等场景中，当同时涉及cpp文件与python文件时，不能采用第一种方式启动。</p><p>​<strong>第一种启动方式</strong></p><pre class="line-numbers language-none"><code class="language-none">python 文件路径&#x2F;自定义文件名.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>​<strong>第二种启动方式</strong></p><pre class="line-numbers language-none"><code class="language-none">cd 工作空间source .&#x2F;devel&#x2F;setup.bashrosrun 包名 自定义文件名.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>​如上所诉，第二种启动方式可以应对同时含有cpp文件与python文件的工作场景，命令行中的source的目的是配置环境变量，缺少该命令将导致程序找不到对应需要的配置。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ROS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ROS文件系统相关命令</title>
       <link href="/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/"/>
       <url>/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/</url>
