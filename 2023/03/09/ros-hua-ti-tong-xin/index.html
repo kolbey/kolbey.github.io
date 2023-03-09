@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS文件系统相关命令, Kolbey">
-    <meta name="description" content="ROS文件系统相关命令">
+    <meta name="keywords" content="ROS话题通信, Kolbey">
+    <meta name="description" content="ROS话题通信">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS文件系统相关命令 | Kolbey</title>
+    <title>ROS话题通信 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS文件系统相关命令</h1>
+                    <h1 class="description center-align post-title">ROS话题通信</h1>
                 </div>
             </div>
         </div>
@@ -352,14 +352,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    430
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    6 分
                 </div>
                 
 
@@ -382,37 +382,247 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="1-ROS文件系统相关命令"><a href="#1-ROS文件系统相关命令" class="headerlink" title="1. ROS文件系统相关命令"></a>1. ROS文件系统相关命令</h3><p>​		ROS 的文件系统本质上都还是操作系统文件，我们可以使用Linux命令来操作这些文件，不过，在ROS中为了更好的用户体验，ROS专门提供了一些类似于Linux的命令，这些命令较之于Linux原生命令，更为简介、高效。文件操作，无外乎就是增删改查与执行等操作，接下来，我们就从这五个维度，来介绍ROS文件系统的一些常用命令。</p>
-<h4 id="1-1-增"><a href="#1-1-增" class="headerlink" title="1.1 增"></a>1.1 增</h4><p>​		catkin_create_pkg 自定义包名 依赖包 &#x3D;&#x3D;&#x3D; 创建新的ROS功能包</p>
-<p>​		sudo apt install xxx &#x3D;&#x3D;&#x3D; 安装 ROS功能包</p>
-<h4 id="1-2-删"><a href="#1-2-删" class="headerlink" title="1.2 删"></a>1.2 删</h4><p>​		sudo apt purge xxx &#x3D;&#x3D;&#x3D;&#x3D; 删除某个功能包</p>
-<h4 id="1-3-查"><a href="#1-3-查" class="headerlink" title="1.3 查"></a>1.3 查</h4><p>​		rospack list &#x3D;&#x3D;&#x3D; 列出所有功能包</p>
-<p>​		rospack find 包名 &#x3D;&#x3D;&#x3D; 查找某个功能包是否存在，如果存在返回安装路径</p>
-<p>​		roscd 包名 &#x3D;&#x3D;&#x3D; 进入某个功能包</p>
-<p>​		rosls 包名 &#x3D;&#x3D;&#x3D; 列出某个包下的文件</p>
-<p>​		apt search xxx &#x3D;&#x3D;&#x3D; 搜索某个功能包</p>
-<h4 id="1-4-改"><a href="#1-4-改" class="headerlink" title="1.4 改"></a>1.4 改</h4><p>​		rosed 包名 文件名 &#x3D;&#x3D;&#x3D; 修改功能包文件</p>
-<p>​		需要安装 vim</p>
-<p>​		**比如:**rosed turtlesim Color.msg</p>
-<h4 id="1-5-执行"><a href="#1-5-执行" class="headerlink" title="1.5 执行"></a>1.5 执行</h4><h5 id="1-5-1-roscore"><a href="#1-5-1-roscore" class="headerlink" title="1.5.1 roscore"></a>1.5.1 roscore</h5><p>​		<strong>roscore &#x3D;&#x3D;&#x3D;</strong> 是 ROS 的系统先决条件节点和程序的集合， 必须运行 roscore 才能使 ROS 节点进行通信。</p>
-<p>​		roscore 将启动:</p>
-<ul>
-<li><p>ros master</p>
-</li>
-<li><p>ros 参数服务器</p>
-</li>
-<li><p>rosout日志节点</p>
-</li>
+                <h3 id="1-话题通信基本操作"><a href="#1-话题通信基本操作" class="headerlink" title="1. 话题通信基本操作"></a>1. 话题通信基本操作</h3><p>**需求:**编写发布订阅实现，要求发布方以10HZ(每秒10次)的频率发布文本消息，订阅方订阅消息并将消息内容打印输出。</p>
+<p><strong>流程:</strong></p>
+<blockquote>
+<ol>
+<li>编写发布方实现；</li>
+<li>编写订阅方实现；</li>
+<li>为python文件添加可执行权限；</li>
+<li>编辑配置文件；</li>
+<li>编译并执行。</li>
+</ol>
+</blockquote>
+<h4 id="1-1-发布方"><a href="#1-1-发布方" class="headerlink" title="1.1 发布方"></a>1.1 发布方</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    需求: 实现基本的话题通信，一方发布数据，一方接收数据，
+         实现的关键点:
+         1.发送方
+         2.接收方
+         3.数据(此处为普通文本)
+
+         PS: 二者需要设置相同的话题
+
+
+    消息发布方:
+        循环发布信息:HelloWorld 后缀数字编号
+
+    实现流程:
+        1.导包 
+        2.初始化 ROS 节点:命名(唯一)
+        3.实例化 发布者 对象
+        4.组织被发布的数据，并编写逻辑发布数据
+
+
+"""</span>
+<span class="token comment">#1.导包 </span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> std_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> String
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment">#2.初始化 ROS 节点:命名(唯一)</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"talker_p"</span><span class="token punctuation">)</span>
+    <span class="token comment">#3.实例化 发布者 对象</span>
+    pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string">"chatter"</span><span class="token punctuation">,</span>String<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token comment">#4.组织被发布的数据，并编写逻辑发布数据</span>
+    msg <span class="token operator">=</span> String<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">#创建 msg 对象</span>
+    msg_front <span class="token operator">=</span> <span class="token string">"hello 你好"</span>
+    count <span class="token operator">=</span> <span class="token number">0</span>  <span class="token comment">#计数器 </span>
+    <span class="token comment"># 设置循环频率</span>
+    rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+        <span class="token comment">#拼接字符串</span>
+        msg<span class="token punctuation">.</span>data <span class="token operator">=</span> msg_front <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
+
+        pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
+        rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"写出的数据:%s"</span><span class="token punctuation">,</span>msg<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+        count <span class="token operator">+=</span> <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-2-订阅方"><a href="#1-2-订阅方" class="headerlink" title="1.2 订阅方"></a>1.2 订阅方</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    需求: 实现基本的话题通信，一方发布数据，一方接收数据，
+         实现的关键点:
+         1.发送方
+         2.接收方
+         3.数据(此处为普通文本)
+
+
+    消息订阅方:
+        订阅话题并打印接收到的消息
+
+    实现流程:
+        1.导包 
+        2.初始化 ROS 节点:命名(唯一)
+        3.实例化 订阅者 对象
+        4.处理订阅的消息(回调函数)
+        5.设置循环调用回调函数
+
+
+
+"""</span>
+<span class="token comment">#1.导包 </span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> std_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> String
+
+<span class="token keyword">def</span> <span class="token function">doMsg</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"I heard:%s"</span><span class="token punctuation">,</span>msg<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment">#2.初始化 ROS 节点:命名(唯一)</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"listener_p"</span><span class="token punctuation">)</span>
+    <span class="token comment">#3.实例化 订阅者 对象</span>
+    sub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span><span class="token string">"chatter"</span><span class="token punctuation">,</span>String<span class="token punctuation">,</span>doMsg<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token comment">#4.处理订阅的消息(回调函数)</span>
+    <span class="token comment">#5.设置循环调用回调函数</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-3-添加可执行权限"><a href="#1-3-添加可执行权限" class="headerlink" title="1.3 添加可执行权限"></a>1.3 添加可执行权限</h4><p>终端下进入 scripts 执行:<code>chmod +x *.py</code></p>
+<h4 id="1-4-配置CMakeLists-txt"><a href="#1-4-配置CMakeLists-txt" class="headerlink" title="1.4 配置CMakeLists.txt"></a>1.4 配置CMakeLists.txt</h4><pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS
+  scripts&#x2F;talker_p.py
+  scripts&#x2F;listener_p.py
+  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-5-执行"><a href="#1-5-执行" class="headerlink" title="1.5 执行"></a>1.5 执行</h4><ol>
+<li>启动roscore</li>
+<li>启动发布节点</li>
+<li>启动订阅节点</li>
+</ol>
+<h3 id="2-话题通信自定义msg"><a href="#2-话题通信自定义msg" class="headerlink" title="2. 话题通信自定义msg"></a>2. 话题通信自定义msg</h3><p>在 ROS 通信协议中，数据载体是一个较为重要组成部分，ROS 中通过 std_msgs 封装了一些原生的数据类型,比如:String、Int32、Int64、Char、Bool、Empty…. 但是，这些数据一般只包含一个 data 字段，结构的单一意味着功能上的局限性，当传输一些复杂的数据，比如: 激光雷达的信息… std_msgs 由于描述性较差而显得力不从心，这种场景下可以使用自定义的消息类型。</p>
+<p>ROS中还有一种特殊类型：<code>Header</code>，标头包含时间戳和ROS中常用的坐标帧信息。会经常看到msg文件的第一行具有<code>Header标头</code>。</p>
+<p>**需求:**创建自定义消息，该消息包含人的信息:姓名、身高、年龄等。</p>
+<p><strong>流程:</strong></p>
+<blockquote>
+<ol>
+<li>按照固定格式创建 msg 文件</li>
+<li>编辑配置文件</li>
+<li>编译生成可以被 Python 或 C++ 调用的中间文件</li>
+</ol>
+</blockquote>
+<h4 id="2-1-定义msg文件"><a href="#2-1-定义msg文件" class="headerlink" title="2.1 定义msg文件"></a>2.1 定义msg文件</h4><p>功能包下新建 msg 目录，添加文件 Person.msg</p>
+<pre class="line-numbers language-none"><code class="language-none">string name
+uint16 age
+float64 height<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-2-编辑配置文件"><a href="#2-2-编辑配置文件" class="headerlink" title="2.2 编辑配置文件"></a>2.2 编辑配置文件</h4><p>功能包内的<strong>package.xml</strong>中添加编译依赖与执行依赖</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;build_depend&gt;message_generation&lt;&#x2F;build_depend&gt;
+&lt;exec_depend&gt;message_runtime&lt;&#x2F;exec_depend&gt;
+&lt;!-- 
+exce_depend 以前对应的是 run_depend 现在非法
+--&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>功能包内的<strong>CMakeLists.txt</strong>编辑 msg 相关配置</p>
+<pre class="line-numbers language-none"><code class="language-none">find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  message_generation
+)
+# 需要加入 message_generation,必须有 std_msgs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">## 配置 msg 源文件
+add_message_files(
+  FILES
+  Person.msg
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none"># 生成消息时依赖于 std_msgs
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">#执行时依赖
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES demo02_talker_listener
+  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+#  DEPENDS system_lib
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-3-编译"><a href="#2-3-编译" class="headerlink" title="2.3 编译"></a>2.3 编译</h4><p>在工作空间下进行编译，<strong>注意</strong>单纯改动python文件不需要进行编译，其他改动一般都是需要编译的，此外，每次新打开的terminal都需要通过<strong>source配置环境</strong>。</p>
+<pre class="line-numbers language-none"><code class="language-none">#  编译---工作空间
+catkin_make
+
+#  配置环境变量---新建terminal时
+source devel&#x2F;setup.bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>编译后产生中间文件供C++或Python调用，后续调用相关 msg 时，是从这些中间文件调用的：</strong></p>
+<p>C++ 需要调用的中间文件(…&#x2F;工作空间&#x2F;devel&#x2F;include&#x2F;包名&#x2F;xxx.h)</p>
+<p><img src="/./images/ROS%E6%9E%B6%E6%9E%84/1.png"></p>
+<p>Python 需要调用的中间文件(…&#x2F;工作空间&#x2F;devel&#x2F;lib&#x2F;python3&#x2F;dist-packages&#x2F;包名&#x2F;msg)</p>
+<p><img src="/./images/ROS%E6%9E%B6%E6%9E%84/2.png"></p>
+<h4 id="2-4-发布方"><a href="#2-4-发布方" class="headerlink" title="2.4 发布方"></a>2.4 发布方</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    发布方:
+        循环发送消息
+
+"""</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> demo02_talker_listener<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Person
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment">#1.初始化 ROS 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"talker_person_p"</span><span class="token punctuation">)</span>
+    <span class="token comment">#2.创建发布者对象</span>
+    pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string">"chatter_person"</span><span class="token punctuation">,</span>Person<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token comment">#3.组织消息</span>
+    p <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"葫芦瓦"</span>
+    p<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">18</span>
+    p<span class="token punctuation">.</span>height <span class="token operator">=</span> <span class="token number">0.75</span>
+
+    <span class="token comment">#4.编写消息发布逻辑</span>
+    rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>p<span class="token punctuation">)</span>  <span class="token comment">#发布消息</span>
+        rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">#休眠</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"姓名:%s, 年龄:%d, 身高:%.2f"</span><span class="token punctuation">,</span>p<span class="token punctuation">.</span>name<span class="token punctuation">,</span> p<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-5-订阅方"><a href="#2-5-订阅方" class="headerlink" title="2.5 订阅方"></a>2.5 订阅方</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    订阅方:
+        订阅消息
+
+"""</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> demo02_talker_listener<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Person
+
+<span class="token keyword">def</span> <span class="token function">doPerson</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"接收到的人的信息:%s, %d, %.2f"</span><span class="token punctuation">,</span>p<span class="token punctuation">.</span>name<span class="token punctuation">,</span> p<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment">#1.初始化节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"listener_person_p"</span><span class="token punctuation">)</span>
+    <span class="token comment">#2.创建订阅者对象</span>
+    sub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span><span class="token string">"chatter_person"</span><span class="token punctuation">,</span>Person<span class="token punctuation">,</span>doPerson<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#4.循环</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-6-权限设置"><a href="#2-6-权限设置" class="headerlink" title="2.6 权限设置"></a>2.6 权限设置</h4><p>终端下进入 scripts 执行:<code>chmod +x *.py</code></p>
+<h4 id="2-7-配置CMakeLists-txt"><a href="#2-7-配置CMakeLists-txt" class="headerlink" title="2.7 配置CMakeLists.txt"></a>2.7 配置CMakeLists.txt</h4><pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS
+  scripts&#x2F;talker_p.py
+  scripts&#x2F;listener_p.py
+  scripts&#x2F;person_talker.py
+  scripts&#x2F;person_listener.py
+  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-8-执行"><a href="#2-8-执行" class="headerlink" title="2.8 执行"></a>2.8 执行</h4><p>1.启动 roscore;</p>
+<p>2.启动发布节点;</p>
+<p>3.启动订阅节点。</p>
+<h3 id="3-ROS话题通信注意事项"><a href="#3-ROS话题通信注意事项" class="headerlink" title="3. ROS话题通信注意事项"></a>3. ROS话题通信注意事项</h3><ul>
+<li>roscore的运行位置可以<strong>任意</strong>，只需启动ros master即可；</li>
+<li>除改动python文件外，其他改动一般都需要在工作空间进行<strong>catkin_make</strong>的编译；</li>
+<li>每次新建的terminal都需要在工作空间进行环境配置，即<strong>source devel&#x2F;setup.bash</strong>；</li>
+<li>python文件的第一行一定不能忘记指定python解释器，即**#! &#x2F;usr&#x2F;bin&#x2F;env python**；</li>
+<li>rosrun 功能包名 自定义文件名.py 与python 自定义文件名.py 启动程序效果相同；</li>
+<li>自定义msg是在<strong>功能包内</strong>新建msg目录，并创建自定义msg名.msg；</li>
+<li>编译生成msg中间文件后，在python文件导入msg内容，采用的是<strong>from 功能包.msg import 自定义msg名</strong>；</li>
 </ul>
-<p>​		用法：</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>​		或(指定端口号)</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore -p xxxx<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h5 id="1-5-2-rosrun"><a href="#1-5-2-rosrun" class="headerlink" title="1.5.2 rosrun"></a>1.5.2 rosrun</h5><p>​		<strong>rosrun 包名 可执行文件名</strong> &#x3D;&#x3D;&#x3D; 运行指定的ROS节点</p>
-<p>​		<strong>比如:</strong><code>rosrun turtlesim turtlesim_node</code></p>
-<h5 id="1-5-3-roslaunch"><a href="#1-5-3-roslaunch" class="headerlink" title="1.5.3 roslaunch"></a>1.5.3 roslaunch</h5><p>​		<strong>roslaunch 包名 launch文件名</strong> &#x3D;&#x3D;&#x3D; 执行某个包下的 launch 文件</p>
 
                 
             </div>
@@ -439,7 +649,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/">https://kolbey.github.io/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/</a>
+                    <a href="https://kolbey.github.io/2023/03/09/ros-hua-ti-tong-xin/">https://kolbey.github.io/2023/03/09/ros-hua-ti-tong-xin/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -524,29 +734,30 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/">
+                <a href="/2023/03/09/ros-hua-ti-tong-xin/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="ROS创建项目流程">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="ROS话题通信">
                         
-                        <span class="card-title">ROS创建项目流程</span>
+                        <span class="card-title">ROS话题通信</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS创建项目流程
+                            ROS话题通信
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -559,6 +770,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -577,19 +789,19 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/09/ros-wen-jian-xi-tong/">
+                <a href="/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ROS文件系统">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="ROS创建项目流程">
                         
-                        <span class="card-title">ROS文件系统</span>
+                        <span class="card-title">ROS创建项目流程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS文件系统
+                            ROS创建项目流程
                         
                     </div>
                     <div class="publish-info">
