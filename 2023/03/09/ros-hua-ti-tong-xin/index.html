@@ -382,7 +382,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="1-话题通信基本操作"><a href="#1-话题通信基本操作" class="headerlink" title="1. 话题通信基本操作"></a>1. 话题通信基本操作</h3><p>**需求:**编写发布订阅实现，要求发布方以10HZ(每秒10次)的频率发布文本消息，订阅方订阅消息并将消息内容打印输出。</p>
+                <h3 id="1-话题通信基本操作"><a href="#1-话题通信基本操作" class="headerlink" title="1. 话题通信基本操作"></a>1. 话题通信基本操作</h3><p><strong>需求:</strong> 编写发布订阅实现，要求发布方以10HZ(每秒10次)的频率发布文本消息，订阅方订阅消息并将消息内容打印输出。</p>
 <p><strong>流程:</strong></p>
 <blockquote>
 <ol>
@@ -492,7 +492,7 @@
 </ol>
 <h3 id="2-话题通信自定义msg"><a href="#2-话题通信自定义msg" class="headerlink" title="2. 话题通信自定义msg"></a>2. 话题通信自定义msg</h3><p>在 ROS 通信协议中，数据载体是一个较为重要组成部分，ROS 中通过 std_msgs 封装了一些原生的数据类型,比如:String、Int32、Int64、Char、Bool、Empty…. 但是，这些数据一般只包含一个 data 字段，结构的单一意味着功能上的局限性，当传输一些复杂的数据，比如: 激光雷达的信息… std_msgs 由于描述性较差而显得力不从心，这种场景下可以使用自定义的消息类型。</p>
 <p>ROS中还有一种特殊类型：<code>Header</code>，标头包含时间戳和ROS中常用的坐标帧信息。会经常看到msg文件的第一行具有<code>Header标头</code>。</p>
-<p>**需求:**创建自定义消息，该消息包含人的信息:姓名、身高、年龄等。</p>
+<p><strong>需求:</strong> 创建自定义消息，该消息包含人的信息:姓名、身高、年龄等。</p>
 <p><strong>流程:</strong></p>
 <blockquote>
 <ol>
