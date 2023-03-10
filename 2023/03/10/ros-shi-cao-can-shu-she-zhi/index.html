@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS常用命令, Kolbey">
-    <meta name="description" content="ROS常用命令">
+    <meta name="keywords" content="ROS实操_参数设置, Kolbey">
+    <meta name="description" content="ROS实操_参数设置">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS常用命令 | Kolbey</title>
+    <title>ROS实操_参数设置 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS常用命令</h1>
+                    <h1 class="description center-align post-title">ROS实操_参数设置</h1>
                 </div>
             </div>
         </div>
@@ -352,14 +352,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    617
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    2 分
                 </div>
                 
 
@@ -382,225 +382,92 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>机器人系统中启动的节点少则几个，多则十几个、几十个，不同的节点名称各异，通信时使用话题、服务、消息、参数等等都各不相同，一个显而易见的问题是: 当需要自定义节点和其他某个已经存在的节点通信时，如何获取对方的话题、以及消息载体的格式呢？</p>
-<p>在 ROS 同提供了一些实用的命令行工具，可以用于获取不同节点的各类信息，常用的命令如下:</p>
+                <p><strong>需求描述:</strong>  修改turtlesim乌龟显示节点窗体的背景色，已知背景色是通过参数服务器的方式以 rgb 方式设置的。</p>
+<p><strong>实现分析:</strong> </p>
 <blockquote>
-<ul>
-<li>rosnode : 操作节点</li>
-<li>rostopic : 操作话题</li>
-<li>rosservice : 操作服务</li>
-<li>rosmsg : 操作msg消息</li>
-<li>rossrv : 操作srv消息</li>
-<li>rosparam : 操作参数</li>
-</ul>
+<ol>
+<li>首先，需要启动乌龟显示节点。</li>
+<li>要通过ROS命令，来获取参数服务器中设置背景色的参数。</li>
+<li>编写参数设置节点，修改参数服务器中的参数值。</li>
+</ol>
 </blockquote>
-<p><strong>作用：</strong> 和之前介绍的文件系统操作命令比较，文件操作命令是静态的，操作的是磁盘上的文件，而上述命令是动态的，在ROS程序启动后，可以动态的获取运行中的节点或参数的相关信息。</p>
-<h3 id="1-rosnode"><a href="#1-rosnode" class="headerlink" title="1. rosnode"></a>1. rosnode</h3><p>rosnode 是用于获取节点信息的命令</p>
-<pre class="line-numbers language-none"><code class="language-none">rosnode ping    测试到节点的连接状态
-rosnode list    列出活动节点
-rosnode info    打印节点信息
-rosnode machine    列出指定设备上节点
-rosnode kill    杀死某个节点
-rosnode cleanup    清除不可连接的节点， 例：启动乌龟节点，然后 ctrl + c 关闭，该节点并没被彻底清除，可用 cleanup 清除节点<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>实现流程:</strong> </p>
+<blockquote>
+<ol>
+<li>通过ros命令获取参数。</li>
+<li>编码实现服参数设置节点。</li>
+<li>启动 roscore、turtlesim_node 与参数设置节点，查看运行结果。</li>
+</ol>
+</blockquote>
+<h3 id="1-参数名获取"><a href="#1-参数名获取" class="headerlink" title="1. 参数名获取"></a>1. 参数名获取</h3><p><strong>获取参数列表:</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">rosparam list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="2-rostopic"><a href="#2-rostopic" class="headerlink" title="2. rostopic"></a>2. rostopic</h3><p><strong>rostopic</strong>包含rostopic命令行工具，用于显示有关ROS 主题的调试信息，包括发布者，订阅者，发布频率和ROS消息。它还包含一个实验性Python库，用于动态获取有关主题的信息并与之交互。</p>
-<pre class="line-numbers language-none"><code class="language-none">rostopic bw     显示主题使用的带宽
-rostopic delay  显示带有 header 的主题延迟
-rostopic echo   打印消息到屏幕
-rostopic find   根据类型查找主题
-rostopic hz     显示主题的发布频率
-rostopic info   显示主题相关信息
-rostopic list   显示所有活动状态下的主题
-rostopic pub    将数据发布到主题
-rostopic type   打印主题类型<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>响应结果:</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;turtlesim&#x2F;background_b
+&#x2F;turtlesim&#x2F;background_g
+&#x2F;turtlesim&#x2F;background_r<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<ul>
-<li><strong>rostopic list</strong>(-v)</li>
-</ul>
-<p>直接调用即可，控制台将打印当前运行状态下的主题名称</p>
-<p>rostopic list -v : 获取话题详情(比如列出：发布者和订阅者个数…</p>
-<ul>
-<li><strong>rostopic pub</strong></li>
-</ul>
-<p>可以直接调用命令向订阅者发布消息</p>
-<p>为roboware 自动生成的 发布&#x2F;订阅 模型案例中的 订阅者 发布一条字符串</p>
-<pre class="line-numbers language-none"><code class="language-none">rostopic pub &#x2F;主题名称 消息类型 消息内容
-rostopic pub &#x2F;chatter std_msgs gagaxixi<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="2-参数修改"><a href="#2-参数修改" class="headerlink" title="2. 参数修改"></a>2. 参数修改</h3><p>本次案例在<code>ROS实操_话题发布</code>创建的<code>dotopic</code>功能包内进行，因此无需开展功能的包的创建等相关操作，只需在<code>scripts</code>目录内配置订阅节点相关的python文件即可</p>
+<pre class="line-numbers language-none"><code class="language-none">touch set_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>为 小乌龟案例的 订阅者 发布一条运动信息</p>
-<pre class="line-numbers language-none"><code class="language-none">rostopic pub &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;Twist
- &quot;linear:
-  x: 1.0
-  y: 0.0
-  z: 0.0
-angular:
-  x: 0.0
-  y: 0.0
-  z: 2.0&quot;
-&#x2F;&#x2F;只发布一次运动信息
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># coding=utf-8</span>
 
-rostopic pub -r 10 &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;Twist
- &quot;linear:
-  x: 1.0
-  y: 0.0
-  z: 0.0
-angular:
-  x: 0.0
-  y: 0.0
-  z: 2.0&quot;
-&#x2F;&#x2F; 以 10HZ 的频率循环发送运动信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">import</span> rospy
 
-<h3 id="3-rosmsg"><a href="#3-rosmsg" class="headerlink" title="3. rosmsg"></a>3. rosmsg</h3><p>rosmsg是用于显示有关 ROS消息类型的 信息的命令行工具。</p>
-<pre class="line-numbers language-none"><code class="language-none">rosmsg show    显示消息描述
-rosmsg info    显示消息信息
-rosmsg list    列出所有消息
-rosmsg md5    显示 md5 加密后的消息
-rosmsg package    显示某个功能包下的所有消息
-rosmsg packages    列出包含消息的功能包<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"hehe"</span><span class="token punctuation">)</span>
+    <span class="token comment"># rospy.set_param("/turtlesim/background_r",255)</span>
+    <span class="token comment"># rospy.set_param("/turtlesim/background_g",255)</span>
+    <span class="token comment"># rospy.set_param("/turtlesim/background_b",255)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"background_r"</span><span class="token punctuation">,</span><span class="token number">255</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"background_g"</span><span class="token punctuation">,</span><span class="token number">255</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"background_b"</span><span class="token punctuation">,</span><span class="token number">255</span><span class="token punctuation">)</span>  <span class="token comment"># 调用时，需要传入 __ns:=xxx</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<ul>
-<li><strong>rosmsg package</strong></li>
-</ul>
-<p>列出某个包下的所有msg</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;rosmsg package 包名 
-rosmsg package turtlesim<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">chmod +x set_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<ul>
-<li><strong>rosmsg show</strong></li>
-</ul>
-<p>显示消息描述</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;rosmsg show 消息名称
-rosmsg show turtlesim&#x2F;Pose
-结果:
-float32 x
-float32 y
-float32 theta
-float32 linear_velocity
-float32 angular_velocity<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>编辑<code>dotopic</code>下的<strong>CmakeLists.txt文件</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS 
+  scripts&#x2F;pub_topic.py
+  scripts&#x2F;sub_topic.py
+  scripts&#x2F;service_topic.py
+  scripts&#x2F;set_topic.py
+  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="4-rosservice"><a href="#4-rosservice" class="headerlink" title="4. rosservice"></a>4. rosservice</h3><p>rosservice包含用于列出和查询ROS<a target="_blank" rel="noopener" href="http://wiki.ros.org/Services">Services</a>的rosservice命令行工具。</p>
-<p>调用部分服务时，如果对相关工作空间没有配置 path，需要进入工作空间调用 source .&#x2F;devel&#x2F;setup.bash</p>
-<pre class="line-numbers language-none"><code class="language-none">rosservice args 打印服务参数
-rosservice call    使用提供的参数调用服务
-rosservice find    按照服务类型查找服务
-rosservice info    打印有关服务的信息
-rosservice list    列出所有活动的服务
-rosservice type    打印服务类型
-rosservice uri    打印服务的 ROSRPC uri<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-运行"><a href="#3-运行" class="headerlink" title="3. 运行"></a>3. 运行</h3><p>工作空间下，编译并初始化环境变量</p>
+<pre class="line-numbers language-none"><code class="language-none">catkin_make
+source devel&#x2F;setup.bash
 
-<ul>
-<li><strong>rosservice list</strong></li>
-</ul>
-<p>列出所有活动的 service</p>
-<pre class="line-numbers language-none"><code class="language-none">~ rosservice list
-&#x2F;clear
-&#x2F;kill
-&#x2F;listener&#x2F;get_loggers
-&#x2F;listener&#x2F;set_logger_level
-&#x2F;reset
-&#x2F;rosout&#x2F;get_loggers
-&#x2F;rosout&#x2F;set_logger_level
-&#x2F;rostopic_4985_1578723066421&#x2F;get_loggers
-&#x2F;rostopic_4985_1578723066421&#x2F;set_logger_level
-&#x2F;rostopic_5582_1578724343069&#x2F;get_loggers
-&#x2F;rostopic_5582_1578724343069&#x2F;set_logger_level
-&#x2F;spawn
-&#x2F;turtle1&#x2F;set_pen
-&#x2F;turtle1&#x2F;teleport_absolute
-&#x2F;turtle1&#x2F;teleport_relative
-&#x2F;turtlesim&#x2F;get_loggers
-&#x2F;turtlesim&#x2F;set_logger_level<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+roscore
 
-<ul>
-<li><strong>rosservice args</strong></li>
-</ul>
-<p>打印服务参数</p>
-<pre class="line-numbers language-none"><code class="language-none">rosservice args &#x2F;spawn
-x y theta name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+rosrun dotopic set_topic.py
+rosrun turtlesim turtlesim_node<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<ul>
-<li><strong>rosservice call</strong></li>
-</ul>
-<p>调用服务</p>
-<p>为小乌龟的案例生成一只新的乌龟</p>
-<pre class="line-numbers language-none"><code class="language-none">rosservice call &#x2F;spawn &quot;x: 1.0
-y: 2.0
-theta: 0.0
-name: &#39;xxx&#39;&quot;
-name: &quot;xxx&quot;
+<p>注意节点启动顺序，如果先启动乌龟显示节点，后启动背景色设置节点，那么颜色设置不会生效。</p>
+<h3 id="4-其他设置方式"><a href="#4-其他设置方式" class="headerlink" title="4. 其他设置方式"></a>4. 其他设置方式</h3><p><strong>方式1:修改小乌龟节点的背景色(命令行实现)</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">rosparam set &#x2F;turtlesim&#x2F;background_b 自定义数值
 
-&#x2F;&#x2F;生成一只叫 xxx 的乌龟<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+rosparam set &#x2F;turtlesim&#x2F;background_g 自定义数值
 
-<h3 id="5-rossrv"><a href="#5-rossrv" class="headerlink" title="5. rossrv"></a>5. rossrv</h3><p>rossrv是用于显示有关ROS服务类型的信息的命令行工具，与 rosmsg 使用语法高度雷同。</p>
-<pre class="line-numbers language-none"><code class="language-none">rossrv show    显示服务消息详情
-rossrv info    显示服务消息相关信息
-rossrv list    列出所有服务信息
-rossrv md5    显示 md5 加密后的服务消息
-rossrv package    显示某个包下所有服务消息
-rossrv packages    显示包含服务消息的所有包<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+rosparam set &#x2F;turtlesim&#x2F;background_r 自定义数值<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="6-rosparam"><a href="#6-rosparam" class="headerlink" title="6. rosparam"></a>6. rosparam</h3><p>rosparam包含rosparam命令行工具，用于使用YAML编码文件在参数服务器上获取和设置ROS参数。</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam set    设置参数
-rosparam get    获取参数
-rosparam load    从外部文件加载参数
-rosparam dump    将参数写出到外部文件
-rosparam delete    删除参数
-rosparam list    列出所有参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>方式2:启动节点时，直接设置参数</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">rosrun turtlesim turtlesim_node _background_r:&#x3D;100 _background_g&#x3D;0 _background_b&#x3D;0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<ul>
-<li><strong>rosparam list</strong></li>
-</ul>
-<p>列出所有参数</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam list
+<p><strong>方式3:通过launch文件传参</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;launch&gt;
+    &lt;node pkg&#x3D;&quot;turtlesim&quot; type&#x3D;&quot;turtlesim_node&quot; name&#x3D;&quot;set_bg&quot; output&#x3D;&quot;screen&quot;&gt;
+        &lt;!-- launch 传参策略1 --&gt;
+        &lt;!-- &lt;param name&#x3D;&quot;background_b&quot; value&#x3D;&quot;0&quot; type&#x3D;&quot;int&quot; &#x2F;&gt;
+        &lt;param name&#x3D;&quot;background_g&quot; value&#x3D;&quot;0&quot; type&#x3D;&quot;int&quot; &#x2F;&gt;
+        &lt;param name&#x3D;&quot;background_r&quot; value&#x3D;&quot;0&quot; type&#x3D;&quot;int&quot; &#x2F;&gt; --&gt;
 
-&#x2F;&#x2F;默认结果
-&#x2F;rosdistro
-&#x2F;roslaunch&#x2F;uris&#x2F;host_helloros_virtual_machine__42911
-&#x2F;rosversion
-&#x2F;run_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        &lt;!-- launch 传参策略2 --&gt;
+        &lt;rosparam command&#x3D;&quot;load&quot; file&#x3D;&quot;$(find demo03_test_parameter)&#x2F;cfg&#x2F;color.yaml&quot; &#x2F;&gt;
+    &lt;&#x2F;node&gt;
 
-<ul>
-<li><strong>rosparam set</strong></li>
-</ul>
-<p>设置参数</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam set name huluwa
-
-&#x2F;&#x2F;再次调用 rosparam list 结果
-&#x2F;name
-&#x2F;rosdistro
-&#x2F;roslaunch&#x2F;uris&#x2F;host_helloros_virtual_machine__42911
-&#x2F;rosversion
-&#x2F;run_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<ul>
-<li><strong>rosparam get</strong></li>
-</ul>
-<p>获取参数</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam get name
-
-&#x2F;&#x2F;结果
-huluwa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<ul>
-<li><strong>rosparam delete</strong></li>
-</ul>
-<p>删除参数</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam delete name
-
-&#x2F;&#x2F;结果
-&#x2F;&#x2F;去除了name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<ul>
-<li><strong>rosparam load(先准备 yaml 文件)</strong></li>
-</ul>
-<p>从外部文件加载参数</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam load xxx.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<ul>
-<li><strong>rosparam dump</strong></li>
-</ul>
-<p>将参数写出到外部文件</p>
-<pre class="line-numbers language-none"><code class="language-none">rosparam dump yyy.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+&lt;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -628,7 +495,7 @@ huluwa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></sp
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/10/ros-chang-yong-ming-ling/">https://kolbey.github.io/2023/03/10/ros-chang-yong-ming-ling/</a>
+                    <a href="https://kolbey.github.io/2023/03/10/ros-shi-cao-can-shu-she-zhi/">https://kolbey.github.io/2023/03/10/ros-shi-cao-can-shu-she-zhi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -713,29 +580,30 @@ huluwa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></sp
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/10/ros-shi-cao-hua-ti-fa-bu/">
+                <a href="/2023/03/10/ros-shi-cao-can-shu-she-zhi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ROS实操_话题发布">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="ROS实操_参数设置">
                         
-                        <span class="card-title">ROS实操_话题发布</span>
+                        <span class="card-title">ROS实操_参数设置</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS实操_话题发布
+                            ROS实操_参数设置
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -748,6 +616,7 @@ huluwa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></sp
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -766,19 +635,19 @@ huluwa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></sp
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/10/ros-can-shu-fu-wu-qi/">
+                <a href="/2023/03/10/ros-shi-cao-fu-wu-diao-yong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="ROS参数服务器">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="ROS实操_服务调用">
                         
-                        <span class="card-title">ROS参数服务器</span>
+                        <span class="card-title">ROS实操_服务调用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS参数服务器
+                            ROS实操_服务调用
                         
                     </div>
                     <div class="publish-info">
