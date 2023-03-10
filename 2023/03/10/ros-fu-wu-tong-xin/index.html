@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS文件系统相关命令, Kolbey">
-    <meta name="description" content="ROS文件系统相关命令">
+    <meta name="keywords" content="ROS服务通信, Kolbey">
+    <meta name="description" content="ROS服务通信">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS文件系统相关命令 | Kolbey</title>
+    <title>ROS服务通信 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS文件系统相关命令</h1>
+                    <h1 class="description center-align post-title">ROS服务通信</h1>
                 </div>
             </div>
         </div>
@@ -338,28 +338,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-09
+                    2023-03-10
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-03-09
+                    2023-03-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    430
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    5 分
                 </div>
                 
 
@@ -382,37 +382,191 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="1-ROS文件系统相关命令"><a href="#1-ROS文件系统相关命令" class="headerlink" title="1. ROS文件系统相关命令"></a>1. ROS文件系统相关命令</h3><p>​		ROS 的文件系统本质上都还是操作系统文件，我们可以使用Linux命令来操作这些文件，不过，在ROS中为了更好的用户体验，ROS专门提供了一些类似于Linux的命令，这些命令较之于Linux原生命令，更为简介、高效。文件操作，无外乎就是增删改查与执行等操作，接下来，我们就从这五个维度，来介绍ROS文件系统的一些常用命令。</p>
-<h4 id="1-1-增"><a href="#1-1-增" class="headerlink" title="1.1 增"></a>1.1 增</h4><p>​		catkin_create_pkg 自定义包名 依赖包 &#x3D;&#x3D;&#x3D; 创建新的ROS功能包</p>
-<p>​		sudo apt install xxx &#x3D;&#x3D;&#x3D; 安装 ROS功能包</p>
-<h4 id="1-2-删"><a href="#1-2-删" class="headerlink" title="1.2 删"></a>1.2 删</h4><p>​		sudo apt purge xxx &#x3D;&#x3D;&#x3D;&#x3D; 删除某个功能包</p>
-<h4 id="1-3-查"><a href="#1-3-查" class="headerlink" title="1.3 查"></a>1.3 查</h4><p>​		rospack list &#x3D;&#x3D;&#x3D; 列出所有功能包</p>
-<p>​		rospack find 包名 &#x3D;&#x3D;&#x3D; 查找某个功能包是否存在，如果存在返回安装路径</p>
-<p>​		roscd 包名 &#x3D;&#x3D;&#x3D; 进入某个功能包</p>
-<p>​		rosls 包名 &#x3D;&#x3D;&#x3D; 列出某个包下的文件</p>
-<p>​		apt search xxx &#x3D;&#x3D;&#x3D; 搜索某个功能包</p>
-<h4 id="1-4-改"><a href="#1-4-改" class="headerlink" title="1.4 改"></a>1.4 改</h4><p>​		rosed 包名 文件名 &#x3D;&#x3D;&#x3D; 修改功能包文件</p>
-<p>​		需要安装 vim</p>
-<p>​		**比如:**rosed turtlesim Color.msg</p>
-<h4 id="1-5-执行"><a href="#1-5-执行" class="headerlink" title="1.5 执行"></a>1.5 执行</h4><h5 id="1-5-1-roscore"><a href="#1-5-1-roscore" class="headerlink" title="1.5.1 roscore"></a>1.5.1 roscore</h5><p>​		<strong>roscore &#x3D;&#x3D;&#x3D;</strong> 是 ROS 的系统先决条件节点和程序的集合， 必须运行 roscore 才能使 ROS 节点进行通信。</p>
-<p>​		roscore 将启动:</p>
+                <h3 id="1-服务通信自定义srv"><a href="#1-服务通信自定义srv" class="headerlink" title="1. 服务通信自定义srv"></a>1. 服务通信自定义srv</h3><p>服务通信也是ROS中一种极其常用的通信模式，服务通信是基于<strong>请求响应</strong>模式的，是一种应答机制。也即: 一个节点A向另一个节点B发送请求，B接收处理请求并产生响应结果返回给A。比如如下场景:</p>
+<blockquote>
+<p>机器人巡逻过程中，控制系统分析传感器数据发现可疑物体或人… 此时需要拍摄照片并留存。</p>
+</blockquote>
+<p>在上述场景中，就使用到了服务通信。一个节点需要向相机节点发送拍照请求，相机节点处理请求，并返回处理结果。与上述应用类似的，服务通信更适用于对时时性有要求、具有一定逻辑处理的应用场景。</p>
+<p><strong>需求:</strong> 服务通信中，客户端提交两个整数至服务端，服务端求和并响应结果到客户端，请创建服务器与客户端通信的数据载体。</p>
+<p><strong>流程:</strong> srv 文件内的可用数据类型与 msg 文件一致，且定义 srv 实现流程与自定义 msg 实现流程类似:</p>
+<blockquote>
+<ol>
+<li>按照固定格式创建srv文件</li>
+<li>编辑配置文件</li>
+<li>编译生成中间文件</li>
+</ol>
+</blockquote>
+<h4 id="1-1-定义srv文件"><a href="#1-1-定义srv文件" class="headerlink" title="1.1 定义srv文件"></a>1.1 定义srv文件</h4><p>服务通信中，数据分成两部分，请求与响应，在 srv 文件中请求和响应使用<code>---</code>分割，具体实现如下:</p>
+<p>功能包下新建 srv 目录，添加 xxx.srv 文件，内容:</p>
+<pre class="line-numbers language-none"><code class="language-none"># 客户端请求时发送的两个数字
+int32 num1
+int32 num2
+---
+# 服务器响应发送的数据
+int32 sum<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-2-编辑配置文件"><a href="#1-2-编辑配置文件" class="headerlink" title="1.2 编辑配置文件"></a>1.2 编辑配置文件</h4><p><strong>package.xml</strong>中添加编译依赖与执行依赖</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;build_depend&gt;message_generation&lt;&#x2F;build_depend&gt;
+&lt;exec_depend&gt;message_runtime&lt;&#x2F;exec_depend&gt;
+&lt;!-- 
+exce_depend 以前对应的是 run_depend 现在非法
+--&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>CMakeLists.txt</strong>编辑 srv 相关配置</p>
+<pre class="line-numbers language-none"><code class="language-none">find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  message_generation
+)
+# 需要加入 message_generation,必须有 std_msgs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">add_service_files(
+  FILES
+  AddInts.srv
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">generate_messages(
+  DEPENDENCIES
+  std_msgs
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意:</strong>  官网没有在 catkin_package 中配置 message_runtime,经测试配置也可以</p>
+<h4 id="1-3-编译"><a href="#1-3-编译" class="headerlink" title="1.3 编译"></a>1.3 编译</h4><p>在工作空间下进行编译，<strong>注意</strong>单纯改动python文件不需要进行编译，其他改动一般都是需要编译的，此外，每次新打开的terminal都需要通过<strong>source配置环境</strong>。</p>
+<pre class="line-numbers language-none"><code class="language-none">#  编译---工作空间
+catkin_make
+
+#  工作空间内配置环境变量---新建terminal时
+source devel&#x2F;setup.bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>编译后产生中间文件供C++或Python调用，后续调用相关 srv时，是从这些中间文件调用的：</strong></p>
+<p>C++ 需要调用的中间文件(…&#x2F;工作空间&#x2F;devel&#x2F;include&#x2F;包名&#x2F;xxx.h)</p>
+<p><img src="/./images/ROS%E6%9E%B6%E6%9E%84/3.png"></p>
+<p>Python 需要调用的中间文件(…&#x2F;工作空间&#x2F;devel&#x2F;lib&#x2F;python3&#x2F;dist-packages&#x2F;包名&#x2F;srv)</p>
+<p><img src="/./images/ROS%E6%9E%B6%E6%9E%84/4.png"></p>
+<h3 id="2-服务通信自定义srv调用"><a href="#2-服务通信自定义srv调用" class="headerlink" title="2. 服务通信自定义srv调用"></a>2. 服务通信自定义srv调用</h3><p><strong>需求:</strong> 编写服务通信，客户端提交两个整数至服务端，服务端求和并响应结果到客户端。</p>
+<p><strong>流程:</strong></p>
+<blockquote>
+<ol>
+<li>编写服务端实现；</li>
+<li>编写客户端实现；</li>
+<li>为python文件添加可执行权限；</li>
+<li>编辑配置文件；</li>
+<li>编译并执行。</li>
+</ol>
+</blockquote>
+<h4 id="2-1-服务端"><a href="#2-1-服务端" class="headerlink" title="2.1 服务端"></a>2.1 服务端</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    需求: 
+        编写两个节点实现服务通信，客户端节点需要提交两个整数到服务器
+        服务器需要解析客户端提交的数据，相加后，将结果响应回客户端，
+        客户端再解析
+
+    服务器端实现:
+        1.导包
+        2.初始化 ROS 节点
+        3.创建服务对象
+        4.回调函数处理请求并产生响应
+        5.spin 函数
+
+"""</span>
+<span class="token comment"># 1.导包</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> demo03_server_client<span class="token punctuation">.</span>srv <span class="token keyword">import</span> AddInts<span class="token punctuation">,</span>AddIntsRequest<span class="token punctuation">,</span>AddIntsResponse
+<span class="token comment"># 回调函数的参数是请求对象，返回值是响应对象</span>
+<span class="token keyword">def</span> <span class="token function">doReq</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 解析提交的数据</span>
+    <span class="token builtin">sum</span> <span class="token operator">=</span> req<span class="token punctuation">.</span>num1 <span class="token operator">+</span> req<span class="token punctuation">.</span>num2
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"提交的数据:num1 = %d, num2 = %d, sum = %d"</span><span class="token punctuation">,</span>req<span class="token punctuation">.</span>num1<span class="token punctuation">,</span> req<span class="token punctuation">.</span>num2<span class="token punctuation">,</span> <span class="token builtin">sum</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 创建响应对象，赋值并返回</span>
+    <span class="token comment"># resp = AddIntsResponse()</span>
+    <span class="token comment"># resp.sum = sum</span>
+    resp <span class="token operator">=</span> AddIntsResponse<span class="token punctuation">(</span><span class="token builtin">sum</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> resp
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment"># 2.初始化 ROS 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"addints_server_p"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 3.创建服务对象</span>
+    server <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Service<span class="token punctuation">(</span><span class="token string">"AddInts"</span><span class="token punctuation">,</span>AddInts<span class="token punctuation">,</span>doReq<span class="token punctuation">)</span>
+    <span class="token comment"># 4.回调函数处理请求并产生响应</span>
+    <span class="token comment"># 5.spin 函数</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-2-客户端"><a href="#2-2-客户端" class="headerlink" title="2.2 客户端"></a>2.2 客户端</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+
+<span class="token triple-quoted-string string">"""
+    需求: 
+        编写两个节点实现服务通信，客户端节点需要提交两个整数到服务器
+        服务器需要解析客户端提交的数据，相加后，将结果响应回客户端，
+        客户端再解析
+
+    客户端实现:
+        1.导包
+        2.初始化 ROS 节点
+        3.创建请求对象
+        4.发送请求
+        5.接收并处理响应
+
+    优化:
+        加入数据的动态获取
+
+
+"""</span>
+<span class="token comment">#1.导包</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> demo03_server_client<span class="token punctuation">.</span>srv <span class="token keyword">import</span> <span class="token operator">*</span>
+<span class="token keyword">import</span> sys
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+
+    <span class="token comment">#优化实现</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">3</span><span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>logerr<span class="token punctuation">(</span><span class="token string">"请正确提交参数"</span><span class="token punctuation">)</span>
+        sys<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+
+    <span class="token comment"># 2.初始化 ROS 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"AddInts_Client_p"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 3.创建请求对象</span>
+    client <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">"AddInts"</span><span class="token punctuation">,</span>AddInts<span class="token punctuation">)</span>
+    <span class="token comment"># 请求前，等待服务已经就绪</span>
+    <span class="token comment"># 方式1:</span>
+    <span class="token comment"># rospy.wait_for_service("AddInts")</span>
+    <span class="token comment"># 方式2</span>
+    client<span class="token punctuation">.</span>wait_for_service<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment"># 4.发送请求,接收并处理响应</span>
+    <span class="token comment"># 方式1</span>
+    <span class="token comment"># resp = client(3,4)</span>
+    <span class="token comment"># 方式2</span>
+    <span class="token comment"># resp = client(AddIntsRequest(1,5))</span>
+    <span class="token comment"># 方式3</span>
+    req <span class="token operator">=</span> AddIntsRequest<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment"># req.num1 = 100</span>
+    <span class="token comment"># req.num2 = 200 </span>
+
+    <span class="token comment">#优化</span>
+    req<span class="token punctuation">.</span>num1 <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    req<span class="token punctuation">.</span>num2 <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
+
+    resp <span class="token operator">=</span> client<span class="token punctuation">.</span>call<span class="token punctuation">(</span>req<span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"响应结果:%d"</span><span class="token punctuation">,</span>resp<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-3-设置权限"><a href="#2-3-设置权限" class="headerlink" title="2.3 设置权限"></a>2.3 设置权限</h4><p>终端下进入 scripts 执行:<code>chmod +x *.py</code></p>
+<h4 id="2-4-配置CMakeLists-txt"><a href="#2-4-配置CMakeLists-txt" class="headerlink" title="2.4 配置CMakeLists.txt"></a>2.4 配置CMakeLists.txt</h4><p><strong>CMakeLists.txt</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS
+  scripts&#x2F;AddInts_Server_p.py 
+  scripts&#x2F;AddInts_Client_p.py
+  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-5-执行"><a href="#2-5-执行" class="headerlink" title="2.5 执行"></a>2.5 执行</h4><p><strong>流程:</strong></p>
 <ul>
-<li><p>ros master</p>
-</li>
-<li><p>ros 参数服务器</p>
-</li>
-<li><p>rosout日志节点</p>
-</li>
+<li>需要先启动服务:<code>rosrun 包名 服务</code></li>
+<li>然后再调用客户端 :<code>rosrun 包名 客户端 参数1 参数2</code></li>
 </ul>
-<p>​		用法：</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>​		或(指定端口号)</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore -p xxxx<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h5 id="1-5-2-rosrun"><a href="#1-5-2-rosrun" class="headerlink" title="1.5.2 rosrun"></a>1.5.2 rosrun</h5><p>​		<strong>rosrun 包名 可执行文件名</strong> &#x3D;&#x3D;&#x3D; 运行指定的ROS节点</p>
-<p>​		<strong>比如:</strong><code>rosrun turtlesim turtlesim_node</code></p>
-<h5 id="1-5-3-roslaunch"><a href="#1-5-3-roslaunch" class="headerlink" title="1.5.3 roslaunch"></a>1.5.3 roslaunch</h5><p>​		<strong>roslaunch 包名 launch文件名</strong> &#x3D;&#x3D;&#x3D; 执行某个包下的 launch 文件</p>
 
                 
             </div>
@@ -439,7 +593,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/">https://kolbey.github.io/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/</a>
+                    <a href="https://kolbey.github.io/2023/03/10/ros-fu-wu-tong-xin/">https://kolbey.github.io/2023/03/10/ros-fu-wu-tong-xin/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -524,29 +678,30 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/">
+                <a href="/2023/03/10/ros-fu-wu-tong-xin/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="ROS创建项目流程">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="ROS服务通信">
                         
-                        <span class="card-title">ROS创建项目流程</span>
+                        <span class="card-title">ROS服务通信</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS创建项目流程
+                            ROS服务通信
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -559,6 +714,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -577,19 +733,19 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/09/ros-wen-jian-xi-tong/">
+                <a href="/2023/03/09/ros-hua-ti-tong-xin/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ROS文件系统">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="ROS话题通信">
                         
-                        <span class="card-title">ROS文件系统</span>
+                        <span class="card-title">ROS话题通信</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS文件系统
+                            ROS话题通信
                         
                     </div>
                     <div class="publish-info">
