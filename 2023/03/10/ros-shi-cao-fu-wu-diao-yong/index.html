@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS实操_话题发布, Kolbey">
-    <meta name="description" content="ROS实操_话题发布">
+    <meta name="keywords" content="ROS实操_服务调用, Kolbey">
+    <meta name="description" content="ROS实操_服务调用">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS实操_话题发布 | Kolbey</title>
+    <title>ROS实操_服务调用 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS实操_话题发布</h1>
+                    <h1 class="description center-align post-title">ROS实操_服务调用</h1>
                 </div>
             </div>
         </div>
@@ -352,7 +352,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    696
+                    537
                 </div>
                 
 
@@ -382,99 +382,95 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><strong>需求描述:</strong> 编码实现乌龟运动控制，让小乌龟做圆周运动。</p>
+                <p><strong>需求描述:</strong> 编码实现向 turtlesim 发送请求，在乌龟显示节点的窗体指定位置生成一乌龟，这是一个服务请求操作。</p>
 <p><strong>实现分析:</strong> </p>
 <blockquote>
 <ol>
-<li>乌龟运动控制实现，关键节点有两个，一个是乌龟运动显示节点 turtlesim_node，另一个是控制节点，二者是订阅发布模式实现通信的，乌龟运动显示节点直接调用即可，运动控制节点之前是使用的 turtle_teleop_key通过键盘 控制，现在需要自定义控制节点。</li>
-<li>控制节点自实现时，首先需要了解控制节点与显示节点通信使用的话题与消息，可以使用ros命令结合计算图来获取。</li>
-<li>了解了话题与消息之后，通过 C++ 或 Python 编写运动控制节点，通过指定的话题，按照一定的逻辑发布消息即可。</li>
+<li>首先，需要启动乌龟显示节点。</li>
+<li>要通过ROS命令，来获取乌龟生成服务的服务名称以及服务消息类型。</li>
+<li>编写服务请求节点，生成新的乌龟。</li>
 </ol>
 </blockquote>
 <p><strong>实现流程:</strong> </p>
 <blockquote>
 <ol>
-<li>通过计算图结合ros命令获取话题与消息信息。</li>
-<li>编码实现运动控制节点。</li>
-<li>启动 roscore、turtlesim_node 以及自定义的控制节点，查看运行结果。</li>
+<li>通过ros命令获取服务与服务消息信息。</li>
+<li>编码实现服务请求节点。</li>
+<li>启动 roscore、turtlesim_node 、乌龟生成节点，生成新的乌龟。</li>
 </ol>
 </blockquote>
-<h3 id="1-话题与消息获取"><a href="#1-话题与消息获取" class="headerlink" title="1. 话题与消息获取"></a>1. 话题与消息获取</h3><p><strong>准备:</strong>  先启动键盘控制乌龟运动案例。</p>
-<h4 id="1-1-话题获取"><a href="#1-1-话题获取" class="headerlink" title="1.1 话题获取"></a>1.1 话题获取</h4><p><strong>获取话题:</strong> &#x2F;turtle1&#x2F;cmd_vel</p>
-<p>通过 rostopic 列出话题:</p>
-<pre class="line-numbers language-none"><code class="language-none">rostopic list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="1-服务名称与服务消息获取"><a href="#1-服务名称与服务消息获取" class="headerlink" title="1. 服务名称与服务消息获取"></a>1. 服务名称与服务消息获取</h3><p><strong>获取话题:</strong> &#x2F;spawn</p>
+<pre class="line-numbers language-none"><code class="language-none">rosservice list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h4 id="1-2-消息获取"><a href="#1-2-消息获取" class="headerlink" title="1.2 消息获取"></a>1.2 消息获取</h4><p><strong>获取消息类型:</strong> geometry_msgs&#x2F;Twist</p>
-<pre class="line-numbers language-none"><code class="language-none">rostopic type &#x2F;turtle1&#x2F;cmd_vel<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>获取消息类型:</strong> turtlesim&#x2F;Spawn</p>
+<pre class="line-numbers language-none"><code class="language-none">rosservice type &#x2F;spawn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>获取消息格式:</strong> </p>
-<pre class="line-numbers language-none"><code class="language-none">rosmsg info geometry_msgs&#x2F;Twist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">rossrv info turtlesim&#x2F;Spawn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>响应结果:</strong> </p>
-<pre class="line-numbers language-none"><code class="language-none">geometry_msgs&#x2F;Vector3 linear
-  float64 x
-  float64 y
-  float64 z
-geometry_msgs&#x2F;Vector3 angular
-  float64 x
-  float64 y
-  float64 z<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">float32 x
+float32 y
+float32 theta
+string name
+---
+string name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>linear(线速度) 下的xyz分别对应在x、y和z方向上的速度(单位是 m&#x2F;s)；</p>
-<p>angular(角速度)下的xyz分别对应x轴上的翻滚、y轴上俯仰和z轴上偏航的速度(单位是rad&#x2F;s)。</p>
-<h3 id="2-实现发布节点"><a href="#2-实现发布节点" class="headerlink" title="2. 实现发布节点"></a>2. 实现发布节点</h3><p>创建功能包需要依赖的功能包: roscpp rospy std_msgs geometry_msgs</p>
-<pre class="line-numbers language-none"><code class="language-none">carkin_create_pkg dotopic rospy std_msgs geometry_msgs
-cd dotopic
-mkdir scripts
-cd scripts
-touch pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-服务客户端实现"><a href="#2-服务客户端实现" class="headerlink" title="2. 服务客户端实现"></a>2. 服务客户端实现</h3><p>本次案例在<code>ROS实操_话题发布</code>创建的<code>dotopic</code>功能包内进行，因此无需开展功能的包的创建等相关操作，只需在<code>scripts</code>目录内配置订阅节点相关的python文件即可。</p>
+<pre class="line-numbers language-none"><code class="language-none">touch service_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># coding=utf-8</span>
 <span class="token triple-quoted-string string">"""
-    编写 ROS 节点，控制小乌龟画圆
-
+    生成一只小乌龟
     准备工作:
-        1.获取topic(已知: /turtle1/cmd_vel)
-        2.获取消息类型(已知: geometry_msgs/Twist)
-        3.运行前，注意先启动 turtlesim_node 节点
+        1.服务话题 /spawn
+        2.服务消息类型 turtlesim/Spawn
+        3.运行前先启动 turtlesim_node 节点
 
     实现流程:
         1.导包
-        2.初始化 ROS 节点
-        3.创建发布者对象
-        4.循环发布运动控制消息
+          需要包含 turtlesim 包下资源，注意在 package.xml 配置
+        2.初始化 ros 节点
+        3.创建 service 客户端
+        4.等待服务启动
+        5.发送请求
+        6.处理响应
 
 """</span>
 
 <span class="token keyword">import</span> rospy
-<span class="token keyword">from</span> geometry_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Twist
+<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>srv <span class="token keyword">import</span> Spawn<span class="token punctuation">,</span>SpawnRequest<span class="token punctuation">,</span>SpawnResponse
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-    <span class="token comment"># 2.初始化 ROS 节点</span>
-    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"control_circle_p"</span><span class="token punctuation">)</span>
-    <span class="token comment"># 3.创建发布者对象</span>
-    pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string">"/turtle1/cmd_vel"</span><span class="token punctuation">,</span>Twist<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
-    <span class="token comment"># 4.循环发布运动控制消息</span>
-    rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
-    msg <span class="token operator">=</span> Twist<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    msg<span class="token punctuation">.</span>linear<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">1.0</span>
-    msg<span class="token punctuation">.</span>linear<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">0.0</span>
-    msg<span class="token punctuation">.</span>linear<span class="token punctuation">.</span>z <span class="token operator">=</span> <span class="token number">0.0</span>
-    msg<span class="token punctuation">.</span>angular<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">0.0</span>
-    msg<span class="token punctuation">.</span>angular<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">0.0</span>
-    msg<span class="token punctuation">.</span>angular<span class="token punctuation">.</span>z <span class="token operator">=</span> <span class="token number">0.5</span>
+    <span class="token comment"># 2.初始化 ros 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"set_turtle_p"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 3.创建 service 客户端</span>
+    client <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">"/spawn"</span><span class="token punctuation">,</span>Spawn<span class="token punctuation">)</span>
+    <span class="token comment"># 4.等待服务启动</span>
+    client<span class="token punctuation">.</span>wait_for_service<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment"># 5.发送请求</span>
+    req <span class="token operator">=</span> SpawnRequest<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    req<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">2.0</span>
+    req<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">2.0</span>
+    req<span class="token punctuation">.</span>theta <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1.57</span>
+    req<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"my_turtle_p"</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        response <span class="token operator">=</span> client<span class="token punctuation">.</span>call<span class="token punctuation">(</span>req<span class="token punctuation">)</span>
+        <span class="token comment"># 6.处理响应</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"乌龟创建成功!，叫:%s"</span><span class="token punctuation">,</span>response<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> expression <span class="token keyword">as</span> identifier<span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"服务调用失败"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-    <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
-        rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">chmod +x sub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">chmod +x pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>编辑<code>**dotopic**</code>下的<strong>CmakeLists.txt文件</strong></p>
+<p>编辑<code>dotopic</code>下的<strong>CmakeLists.txt文件</strong> </p>
 <pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS 
   scripts&#x2F;pub_topic.py
+  scripts&#x2F;sub_topic.py
+  scripts&#x2F;service_topic.py
   DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
-)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-运行"><a href="#3-运行" class="headerlink" title="3. 运行"></a>3. 运行</h3><p>工作空间下，编译并初始化环境变量</p>
 <pre class="line-numbers language-none"><code class="language-none">catkin_make
@@ -483,7 +479,8 @@ source devel&#x2F;setup.bash
 roscore
 
 rosrun turtlesim turtlesim_node
-rosrun dotopic pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+rosrun dotopic pub_topic.py
+rosrun dotopic service_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -511,7 +508,7 @@ rosrun dotopic pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><s
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/10/ros-shi-cao-hua-ti-fa-bu/">https://kolbey.github.io/2023/03/10/ros-shi-cao-hua-ti-fa-bu/</a>
+                    <a href="https://kolbey.github.io/2023/03/10/ros-shi-cao-fu-wu-diao-yong/">https://kolbey.github.io/2023/03/10/ros-shi-cao-fu-wu-diao-yong/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -596,29 +593,30 @@ rosrun dotopic pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><s
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/10/ros-shi-cao-hua-ti-ding-yue/">
+                <a href="/2023/03/10/ros-shi-cao-fu-wu-diao-yong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="ROS实操_话题订阅">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="ROS实操_服务调用">
                         
-                        <span class="card-title">ROS实操_话题订阅</span>
+                        <span class="card-title">ROS实操_服务调用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS实操_话题订阅
+                            ROS实操_服务调用
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -631,6 +629,7 @@ rosrun dotopic pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><s
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -649,19 +648,19 @@ rosrun dotopic pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><s
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/10/ros-chang-yong-ming-ling/">
+                <a href="/2023/03/10/ros-shi-cao-hua-ti-ding-yue/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="ROS常用命令">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="ROS实操_话题订阅">
                         
-                        <span class="card-title">ROS常用命令</span>
+                        <span class="card-title">ROS实操_话题订阅</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS常用命令
+                            ROS实操_话题订阅
                         
                     </div>
                     <div class="publish-info">
