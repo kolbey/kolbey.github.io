@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS文件系统相关命令, Kolbey">
-    <meta name="description" content="ROS文件系统相关命令">
+    <meta name="keywords" content="ROS实操_话题订阅, Kolbey">
+    <meta name="description" content="ROS实操_话题订阅">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS文件系统相关命令 | Kolbey</title>
+    <title>ROS实操_话题订阅 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS文件系统相关命令</h1>
+                    <h1 class="description center-align post-title">ROS实操_话题订阅</h1>
                 </div>
             </div>
         </div>
@@ -338,28 +338,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-09
+                    2023-03-10
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-03-09
+                    2023-03-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    430
+                    546
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -382,37 +382,98 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="1-ROS文件系统相关命令"><a href="#1-ROS文件系统相关命令" class="headerlink" title="1. ROS文件系统相关命令"></a>1. ROS文件系统相关命令</h3><p>​		ROS 的文件系统本质上都还是操作系统文件，我们可以使用Linux命令来操作这些文件，不过，在ROS中为了更好的用户体验，ROS专门提供了一些类似于Linux的命令，这些命令较之于Linux原生命令，更为简介、高效。文件操作，无外乎就是增删改查与执行等操作，接下来，我们就从这五个维度，来介绍ROS文件系统的一些常用命令。</p>
-<h4 id="1-1-增"><a href="#1-1-增" class="headerlink" title="1.1 增"></a>1.1 增</h4><p>​		catkin_create_pkg 自定义包名 依赖包 &#x3D;&#x3D;&#x3D; 创建新的ROS功能包</p>
-<p>​		sudo apt install xxx &#x3D;&#x3D;&#x3D; 安装 ROS功能包</p>
-<h4 id="1-2-删"><a href="#1-2-删" class="headerlink" title="1.2 删"></a>1.2 删</h4><p>​		sudo apt purge xxx &#x3D;&#x3D;&#x3D;&#x3D; 删除某个功能包</p>
-<h4 id="1-3-查"><a href="#1-3-查" class="headerlink" title="1.3 查"></a>1.3 查</h4><p>​		rospack list &#x3D;&#x3D;&#x3D; 列出所有功能包</p>
-<p>​		rospack find 包名 &#x3D;&#x3D;&#x3D; 查找某个功能包是否存在，如果存在返回安装路径</p>
-<p>​		roscd 包名 &#x3D;&#x3D;&#x3D; 进入某个功能包</p>
-<p>​		rosls 包名 &#x3D;&#x3D;&#x3D; 列出某个包下的文件</p>
-<p>​		apt search xxx &#x3D;&#x3D;&#x3D; 搜索某个功能包</p>
-<h4 id="1-4-改"><a href="#1-4-改" class="headerlink" title="1.4 改"></a>1.4 改</h4><p>​		rosed 包名 文件名 &#x3D;&#x3D;&#x3D; 修改功能包文件</p>
-<p>​		需要安装 vim</p>
-<p>​		**比如:**rosed turtlesim Color.msg</p>
-<h4 id="1-5-执行"><a href="#1-5-执行" class="headerlink" title="1.5 执行"></a>1.5 执行</h4><h5 id="1-5-1-roscore"><a href="#1-5-1-roscore" class="headerlink" title="1.5.1 roscore"></a>1.5.1 roscore</h5><p>​		<strong>roscore &#x3D;&#x3D;&#x3D;</strong> 是 ROS 的系统先决条件节点和程序的集合， 必须运行 roscore 才能使 ROS 节点进行通信。</p>
-<p>​		roscore 将启动:</p>
-<ul>
-<li><p>ros master</p>
-</li>
-<li><p>ros 参数服务器</p>
-</li>
-<li><p>rosout日志节点</p>
-</li>
-</ul>
-<p>​		用法：</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <p><strong>需求描述:</strong>  已知turtlesim中的乌龟显示节点，会发布当前乌龟的位姿(窗体中乌龟的坐标以及朝向)，要求控制乌龟运动，并时时打印当前乌龟的位姿。</p>
+<p><strong>实现分析:</strong> </p>
+<blockquote>
+<ol>
+<li>首先，需要启动乌龟显示以及运动控制节点并控制乌龟运动。</li>
+<li>要通过ROS命令，来获取乌龟位姿发布的话题以及消息。</li>
+<li>编写订阅节点，订阅并打印乌龟的位姿。</li>
+</ol>
+</blockquote>
+<p><strong>实现流程:</strong> </p>
+<blockquote>
+<ol>
+<li>通过ros命令获取话题与消息信息。</li>
+<li>编码实现位姿获取节点。</li>
+<li>启动 roscore、turtlesim_node 、控制节点以及位姿订阅节点，控制乌龟运动并输出乌龟的位姿。</li>
+</ol>
+</blockquote>
+<h3 id="1-话题与消息获取"><a href="#1-话题与消息获取" class="headerlink" title="1. 话题与消息获取"></a>1. 话题与消息获取</h3><p><strong>获取话题:</strong> &#x2F;turtle1&#x2F;pose</p>
+<pre class="line-numbers language-none"><code class="language-none">rostopic list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>​		或(指定端口号)</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore -p xxxx<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>获取消息类型:</strong> turtlesim&#x2F;Pose</p>
+<pre class="line-numbers language-none"><code class="language-none">rostopic type  &#x2F;turtle1&#x2F;pose<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h5 id="1-5-2-rosrun"><a href="#1-5-2-rosrun" class="headerlink" title="1.5.2 rosrun"></a>1.5.2 rosrun</h5><p>​		<strong>rosrun 包名 可执行文件名</strong> &#x3D;&#x3D;&#x3D; 运行指定的ROS节点</p>
-<p>​		<strong>比如:</strong><code>rosrun turtlesim turtlesim_node</code></p>
-<h5 id="1-5-3-roslaunch"><a href="#1-5-3-roslaunch" class="headerlink" title="1.5.3 roslaunch"></a>1.5.3 roslaunch</h5><p>​		<strong>roslaunch 包名 launch文件名</strong> &#x3D;&#x3D;&#x3D; 执行某个包下的 launch 文件</p>
+<p>**获取消息格式: **</p>
+<pre class="line-numbers language-none"><code class="language-none">rosmsg info turtlesim&#x2F;Pose<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>响应结果:</strong> </p>
+<pre class="line-numbers language-none"><code class="language-none">float32 x
+float32 y
+float32 theta
+float32 linear_velocity
+float32 angular_velocity<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-实现订阅节点"><a href="#2-实现订阅节点" class="headerlink" title="2. 实现订阅节点"></a>2. 实现订阅节点</h3><p>本次案例在<code>ROS实操_话题发布</code>创建的<code>dotopic</code>功能包内进行，因此无需开展功能的包的创建等相关操作，只需在<code>scripts</code>目录内配置订阅节点相关的python文件即可。</p>
+<pre class="line-numbers language-none"><code class="language-none">touch sub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># coding=utf-8</span>
+<span class="token triple-quoted-string string">"""
+    订阅小乌龟的位姿: 时时获取小乌龟在窗体中的坐标并打印
+    准备工作:
+        1.获取话题名称 /turtle1/pose
+        2.获取消息类型 turtlesim/Pose
+        3.运行前启动 turtlesim_node 与 turtle_teleop_key 节点
+
+    实现流程:
+        1.导包
+        2.初始化 ROS 节点
+        3.创建订阅者对象
+        4.回调函数处理订阅的数据
+        5.spin
+
+"""</span>
+
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Pose
+
+<span class="token keyword">def</span> <span class="token function">doPose</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"乌龟坐标:x=%.2f, y=%.2f,theta=%.2f"</span><span class="token punctuation">,</span>data<span class="token punctuation">.</span>x<span class="token punctuation">,</span>data<span class="token punctuation">.</span>y<span class="token punctuation">,</span>data<span class="token punctuation">.</span>theta<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+
+    <span class="token comment"># 2.初始化 ROS 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"sub_pose_p"</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 3.创建订阅者对象</span>
+    sub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span><span class="token string">"/turtle1/pose"</span><span class="token punctuation">,</span>Pose<span class="token punctuation">,</span>doPose<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+    <span class="token comment">#     4.回调函数处理订阅的数据</span>
+    <span class="token comment">#     5.spin</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">chmod +x sub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>编辑<code>dotopic</code>下的<strong>CmakeLists.txt文件</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS 
+  scripts&#x2F;pub_topic.py
+  scripts&#x2F;sub_topic.py
+  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-运行"><a href="#3-运行" class="headerlink" title="3. 运行"></a>3. 运行</h3><p>工作空间下，编译并初始化环境变量</p>
+<pre class="line-numbers language-none"><code class="language-none">catkin_make
+source devel&#x2F;setup.bash
+
+roscore
+
+rosrun turtlesim turtlesim_node
+rosrun dotopic sub_topic.py
+rosrun dotopic pub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
             </div>
@@ -439,7 +500,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/">https://kolbey.github.io/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/</a>
+                    <a href="https://kolbey.github.io/2023/03/10/ros-shi-cao-hua-ti-ding-yue/">https://kolbey.github.io/2023/03/10/ros-shi-cao-hua-ti-ding-yue/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -524,29 +585,30 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/">
+                <a href="/2023/03/10/ros-shi-cao-hua-ti-ding-yue/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="ROS创建项目流程">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="ROS实操_话题订阅">
                         
-                        <span class="card-title">ROS创建项目流程</span>
+                        <span class="card-title">ROS实操_话题订阅</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS创建项目流程
+                            ROS实操_话题订阅
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -559,6 +621,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -577,24 +640,24 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/09/ros-wen-jian-xi-tong/">
+                <a href="/2023/03/10/ros-shi-cao-hua-ti-fa-bu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ROS文件系统">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ROS实操_话题发布">
                         
-                        <span class="card-title">ROS文件系统</span>
+                        <span class="card-title">ROS实操_话题发布</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS文件系统
+                            ROS实操_话题发布
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
                             </span>
                         <span class="publish-author">
                             
