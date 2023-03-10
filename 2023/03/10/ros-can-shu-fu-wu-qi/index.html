@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS创建项目流程, Kolbey">
-    <meta name="description" content="ROS创建项目流程">
+    <meta name="keywords" content="ROS参数服务器, Kolbey">
+    <meta name="description" content="ROS参数服务器">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS创建项目流程 | Kolbey</title>
+    <title>ROS参数服务器 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS创建项目流程</h1>
+                    <h1 class="description center-align post-title">ROS参数服务器</h1>
                 </div>
             </div>
         </div>
@@ -338,28 +338,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-09
+                    2023-03-10
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-03-09
+                    2023-03-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    671
+                    879
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -382,64 +382,133 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><img src="/./images/ROS%E6%9E%B6%E6%9E%84/0.png"></p>
-<p>​		ROS中涉及的编程语言以C++和Python为主，ROS中的大多数程序两者都可以实现，同时，ROS中的程序即便使用不同的编程语言，实现流程也大致类似，以当前HelloWorld程序为例，实现流程大致如下：</p>
+                <h3 id="1-参数服务器"><a href="#1-参数服务器" class="headerlink" title="1. 参数服务器"></a>1. 参数服务器</h3><p>参数服务器在ROS中主要用于实现不同节点之间的数据共享。参数服务器相当于是独立于所有节点的一个公共容器，可以将数据存储在该容器中，被不同的节点调用，当然不同的节点也可以往其中存储数据，关于参数服务器的典型应用场景如下:</p>
 <blockquote>
-<ol>
-<li>先创建一个工作空间；</li>
-<li>再创建一个功能包；</li>
-<li>编辑源文件；</li>
-<li>编辑配置文件；</li>
-<li>编译并执行。</li>
-</ol>
+<p>导航实现时，会进行路径规划，比如: 全局路径规划，设计一个从出发点到目标点的大致路径。本地路径规划，会根据当前路况生成时时的行进路径</p>
 </blockquote>
-<p>​		上述流程中，C++和Python只是在步骤3和步骤4的实现细节上存在差异，其他流程基本一致。</p>
-<h3 id="1-创建工作空间并初始化"><a href="#1-创建工作空间并初始化" class="headerlink" title="1. 创建工作空间并初始化"></a>1. 创建工作空间并初始化</h3><pre class="line-numbers language-none"><code class="language-none">mkdir -p 自定义空间名称&#x2F;src
-cd 自定义空间名称
-catkin_make<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>上述场景中，全局路径规划和本地路径规划时，就会使用到参数服务器：路径规划时，需要参考小车的尺寸，我们可以将这些尺寸信息存储到参数服务器，全局路径规划节点与本地路径规划节点都可以从参数服务器中调用这些参数。</p>
+<blockquote>
+<p>参数服务器，一般适用于存在数据共享的一些应用场景。</p>
+<p><strong>注意:</strong> 参数服务器不是为高性能而设计的，因此最好用于存储静态的非二进制的简单数据。</p>
+</blockquote>
+<p>参数可使用数据类型:</p>
+<blockquote>
+<ul>
+<li>32-bit integers</li>
+<li>booleans</li>
+<li>strings</li>
+<li>doubles</li>
+<li>iso8601 dates</li>
+<li>lists</li>
+<li>base64-encoded binary data</li>
+<li>字典</li>
+</ul>
+</blockquote>
+<h3 id="2-创建并使用参数服务器"><a href="#2-创建并使用参数服务器" class="headerlink" title="2. 创建并使用参数服务器"></a>2. 创建并使用参数服务器</h3><p><strong>需求:</strong> 实现参数服务器参数的增删改查操作。</p>
+<p>预先准备好ROS工作空间，具体的操作可以参考另外一篇博客笔记，<a href="https://kolbey.github.io/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/">ROS创建项目流程</a>。具体的操作流程如下：</p>
+<blockquote>
+<ul>
+<li>创建工作空间；</li>
+<li>进入src创建ROS包并添加依赖；</li>
+<li>进入ROS包添加scripts目录并编辑下列python文件</li>
+<li>为python文件添加可执行权限</li>
+<li>在ROS包下的CMakeLists.txt中添加<code>**catkin_install_python**</code>内的<code>**scripts/自定义文件名.py**</code>;</li>
+<li>在工作环境目录下进行编译<code>**catkin_make**</code>；</li>
+<li>在新建的terminal内初始化环境变量<code>**source devel/setup.bash**</code>；</li>
+<li>启动<code>roscore</code>，启动脚本<code>**rosrun ros包名称 自定义文件名.py**</code>。</li>
+</ul>
+</blockquote>
+<h4 id="2-1-参数服务器新增（修改）参数"><a href="#2-1-参数服务器新增（修改）参数" class="headerlink" title="2.1 参数服务器新增（修改）参数"></a>2.1 参数服务器新增（修改）参数</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    参数服务器操作之新增与修改(二者API一样)_Python实现:
+"""</span>
 
-<p>​		上述命令，首先会创建一个工作空间以及一个 src 子目录，然后再进入工作空间调用 catkin_make命令编译。</p>
-<h3 id="2-进入src创建ros包并添加依赖"><a href="#2-进入src创建ros包并添加依赖" class="headerlink" title="2. 进入src创建ros包并添加依赖"></a>2. 进入src创建ros包并添加依赖</h3><pre class="line-numbers language-none"><code class="language-none">cd src
-catkin_create_pkg 自定义ROS包名 roscpp rospy std_msgs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<span class="token keyword">import</span> rospy
 
-<p>​		上述命令，会在工作空间下生成一个功能包，该功能包依赖于 roscpp、rospy 与 std_msgs，其中roscpp是使用C++实现的库，而rospy则是使用python实现的库，std_msgs是标准消息库，创建ROS功能包时，一般都会依赖这三个库实现。</p>
-<h3 id="3-进入ros包添加scripts目录并编辑python文件"><a href="#3-进入ros包添加scripts目录并编辑python文件" class="headerlink" title="3. 进入ros包添加scripts目录并编辑python文件"></a>3. 进入ros包添加scripts目录并编辑python文件</h3><pre class="line-numbers language-none"><code class="language-none">cd ros包
-mkdir scripts<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"set_update_paramter_p"</span><span class="token punctuation">)</span>
 
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+    <span class="token comment"># 设置各种类型参数</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_double"</span><span class="token punctuation">,</span><span class="token number">3.14</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_bool"</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_string"</span><span class="token punctuation">,</span><span class="token string">"hello python"</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_list"</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token string">"hello"</span><span class="token punctuation">,</span><span class="token string">"haha"</span><span class="token punctuation">,</span><span class="token string">"xixi"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_dict"</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"hulu"</span><span class="token punctuation">,</span><span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 修改</span>
+    rospy<span class="token punctuation">.</span>set_param<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-2-参数服务器获取参数"><a href="#2-2-参数服务器获取参数" class="headerlink" title="2.2 参数服务器获取参数"></a>2.2 参数服务器获取参数</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
 
 <span class="token triple-quoted-string string">"""
-    Python 版 HelloWorld
+    参数服务器操作之查询_Python实现:    
+        get_param(键,默认值)
+            当键存在时，返回对应的值，如果不存在返回默认值
+        get_param_cached
+        get_param_names
+        has_param
+        search_param
+"""</span>
 
+<span class="token keyword">import</span> rospy
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"get_param_p"</span><span class="token punctuation">)</span>
+
+    <span class="token comment">#获取参数</span>
+    int_value <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">,</span><span class="token number">10000</span><span class="token punctuation">)</span>
+    double_value <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param<span class="token punctuation">(</span><span class="token string">"p_double"</span><span class="token punctuation">)</span>
+    bool_value <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param<span class="token punctuation">(</span><span class="token string">"p_bool"</span><span class="token punctuation">)</span>
+    string_value <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param<span class="token punctuation">(</span><span class="token string">"p_string"</span><span class="token punctuation">)</span>
+    p_list <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param<span class="token punctuation">(</span><span class="token string">"p_list"</span><span class="token punctuation">)</span>
+    p_dict <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param<span class="token punctuation">(</span><span class="token string">"p_dict"</span><span class="token punctuation">)</span>
+
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"获取的数据:%d,%.2f,%d,%s"</span><span class="token punctuation">,</span>
+                int_value<span class="token punctuation">,</span>
+                double_value<span class="token punctuation">,</span>
+                bool_value<span class="token punctuation">,</span>
+                string_value<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> ele <span class="token keyword">in</span> p_list<span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"ele = %s"</span><span class="token punctuation">,</span> ele<span class="token punctuation">)</span>
+
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"name = %s, age = %d"</span><span class="token punctuation">,</span>p_dict<span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>p_dict<span class="token punctuation">[</span><span class="token string">"age"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># get_param_cached</span>
+    int_cached <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param_cached<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"缓存数据:%d"</span><span class="token punctuation">,</span>int_cached<span class="token punctuation">)</span>
+
+    <span class="token comment"># get_param_names</span>
+    names <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_param_names<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> name <span class="token keyword">in</span> names<span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"name = %s"</span><span class="token punctuation">,</span>name<span class="token punctuation">)</span>
+
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"-"</span><span class="token operator">*</span><span class="token number">80</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># has_param</span>
+    flag <span class="token operator">=</span> rospy<span class="token punctuation">.</span>has_param<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"包含p_int吗？%d"</span><span class="token punctuation">,</span>flag<span class="token punctuation">)</span>
+
+    <span class="token comment"># search_param</span>
+    key <span class="token operator">=</span> rospy<span class="token punctuation">.</span>search_param<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"搜索的键 = %s"</span><span class="token punctuation">,</span>key<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-3-参数服务器删除参数"><a href="#2-3-参数服务器删除参数" class="headerlink" title="2.3 参数服务器删除参数"></a>2.3 参数服务器删除参数</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token triple-quoted-string string">"""
+    参数服务器操作之删除_Python实现:
+    rospy.delete_param("键")
+    键存在时，可以删除成功，键不存在时，会抛出异常
 """</span>
 <span class="token keyword">import</span> rospy
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span>
-    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"Hello World!!!!"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"delete_param_p"</span><span class="token punctuation">)</span>
 
-<h3 id="4-为python文件添加可执行权限"><a href="#4-为python文件添加可执行权限" class="headerlink" title="4. 为python文件添加可执行权限"></a>4. 为python文件添加可执行权限</h3><pre class="line-numbers language-none"><code class="language-none">chmod +x 自定义文件名.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>delete_param<span class="token punctuation">(</span><span class="token string">"p_int"</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"删除失败"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="5-编辑ros包下的CmakeLists-txt文件"><a href="#5-编辑ros包下的CmakeLists-txt文件" class="headerlink" title="5. 编辑ros包下的CmakeLists.txt文件"></a>5. 编辑ros包下的CmakeLists.txt文件</h3><pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS scripts&#x2F;自定义文件名.py
-  DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
-)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="6-进入工作空间目录并编译"><a href="#6-进入工作空间目录并编译" class="headerlink" title="6. 进入工作空间目录并编译"></a>6. 进入工作空间目录并编译</h3><pre class="line-numbers language-none"><code class="language-none">cd 自定义空间名称
-catkin_make<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="7-启动并执行程序"><a href="#7-启动并执行程序" class="headerlink" title="7. 启动并执行程序"></a>7. 启动并执行程序</h3><p>​		先启动roscore，这个是启动ros工作环境必须要执行的，值得注意的是该命令可以在任何路径执行，不会对后续命令产生负面影响。</p>
-<pre class="line-numbers language-none"><code class="language-none">roscore<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>​		再启动python文件，python文件的启动方式有两种，第一种是按照常规的python文件启动方式进行，当前理解是此种方式只是针对ros工作空间只有python文件进行通信等场景中，当同时涉及cpp文件与python文件时，不能采用第一种方式启动。</p>
-<p>​		<strong>第一种启动方式</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">python 文件路径&#x2F;自定义文件名.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>​		<strong>第二种启动方式</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">cd 工作空间
-source .&#x2F;devel&#x2F;setup.bash
-rosrun 包名 自定义文件名.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>​		如上所诉，第二种启动方式可以应对同时含有cpp文件与python文件的工作场景，命令行中的source的目的是配置环境变量，缺少该命令将导致程序找不到对应需要的配置。</p>
 
                 
             </div>
@@ -466,7 +535,7 @@ rosrun 包名 自定义文件名.py<span aria-hidden="true" class="line-numbers-
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/">https://kolbey.github.io/2023/03/09/ros-chuang-jian-xiang-mu-liu-cheng/</a>
+                    <a href="https://kolbey.github.io/2023/03/10/ros-can-shu-fu-wu-qi/">https://kolbey.github.io/2023/03/10/ros-can-shu-fu-wu-qi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -551,29 +620,30 @@ rosrun 包名 自定义文件名.py<span aria-hidden="true" class="line-numbers-
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/09/ros-hua-ti-tong-xin/">
+                <a href="/2023/03/10/ros-can-shu-fu-wu-qi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="ROS话题通信">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="ROS参数服务器">
                         
-                        <span class="card-title">ROS话题通信</span>
+                        <span class="card-title">ROS参数服务器</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS话题通信
+                            ROS参数服务器
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -586,6 +656,7 @@ rosrun 包名 自定义文件名.py<span aria-hidden="true" class="line-numbers-
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -604,24 +675,24 @@ rosrun 包名 自定义文件名.py<span aria-hidden="true" class="line-numbers-
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/09/ros-wen-jian-xi-tong-xiang-guan-ming-ling/">
+                <a href="/2023/03/10/ros-fu-wu-tong-xin/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="ROS文件系统相关命令">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="ROS服务通信">
                         
-                        <span class="card-title">ROS文件系统相关命令</span>
+                        <span class="card-title">ROS服务通信</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS文件系统相关命令
+                            ROS服务通信
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
                             </span>
                         <span class="publish-author">
                             
