@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ROS实操_服务调用, Kolbey">
-    <meta name="description" content="ROS实操_服务调用">
+    <meta name="keywords" content="ROS实操_TF坐标变换, Kolbey">
+    <meta name="description" content="ROS实操_TF坐标变换">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ROS实操_服务调用 | Kolbey</title>
+    <title>ROS实操_TF坐标变换 | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ROS实操_服务调用</h1>
+                    <h1 class="description center-align post-title">ROS实操_TF坐标变换</h1>
                 </div>
             </div>
         </div>
@@ -352,14 +352,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    537
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    7 分
                 </div>
                 
 
@@ -382,105 +382,252 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><strong>需求描述:</strong> 编码实现向 turtlesim 发送请求，在乌龟显示节点的窗体指定位置生成一乌龟，这是一个服务请求操作。</p>
+                <p><strong>需求描述:</strong> </p>
+<p>程序启动之初: 产生两只乌龟，中间的乌龟(A) 和 左下乌龟(B), B 会自动运行至A的位置，并且键盘控制时，只是控制 A 的运动，但是 B 可以跟随 A 运行。</p>
 <p><strong>实现分析:</strong> </p>
+<p>乌龟跟随实现的核心，是乌龟A和B都要发布相对世界坐标系的坐标信息，然后，订阅到该信息需要转换获取A相对于B坐标系的信息，最后，再生成速度信息，并控制B运动。</p>
 <blockquote>
 <ol>
-<li>首先，需要启动乌龟显示节点。</li>
-<li>要通过ROS命令，来获取乌龟生成服务的服务名称以及服务消息类型。</li>
-<li>编写服务请求节点，生成新的乌龟。</li>
+<li>启动乌龟显示节点</li>
+<li>在乌龟显示窗体中生成一只新的乌龟(需要使用服务)</li>
+<li>编写两只乌龟发布坐标信息的节点</li>
+<li>编写订阅节点订阅坐标信息并生成新的相对关系生成速度信息</li>
 </ol>
 </blockquote>
-<p><strong>实现流程:</strong> </p>
+<p><strong>实现流程:</strong> C++ 与 Python 实现流程一致</p>
 <blockquote>
 <ol>
-<li>通过ros命令获取服务与服务消息信息。</li>
-<li>编码实现服务请求节点。</li>
-<li>启动 roscore、turtlesim_node 、乌龟生成节点，生成新的乌龟。</li>
+<li>新建功能包，添加依赖</li>
+<li>编写服务客户端，用于生成一只新的乌龟</li>
+<li>编写发布方，发布两只乌龟的坐标信息</li>
+<li>编写订阅方，订阅两只乌龟信息，生成速度信息并发布</li>
+<li>运行</li>
 </ol>
 </blockquote>
-<h3 id="1-服务名称与服务消息获取"><a href="#1-服务名称与服务消息获取" class="headerlink" title="1. 服务名称与服务消息获取"></a>1. 服务名称与服务消息获取</h3><p><strong>获取话题:</strong> &#x2F;spawn</p>
-<pre class="line-numbers language-none"><code class="language-none">rosservice list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>准备工作:</strong> </p>
+<p>1.了解如何创建第二只乌龟，且不受键盘控制</p>
+<p>创建第二只乌龟需要使用rosservice,话题使用的是 spawn</p>
+<pre class="line-numbers language-none"><code class="language-none">rosservice call &#x2F;spawn &quot;x: 1.0
+y: 1.0
+theta: 1.0
+name: &#39;turtle_flow&#39;&quot; 
+name: &quot;turtle_flow&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><strong>获取消息类型:</strong> turtlesim&#x2F;Spawn</p>
-<pre class="line-numbers language-none"><code class="language-none">rosservice type &#x2F;spawn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>键盘是无法控制第二只乌龟运动的，因为使用的话题: &#x2F;第二只乌龟名称&#x2F;cmd_vel,对应的要控制乌龟运动必须发布对应的话题消息</p>
+<p>2.了解如何获取两只乌龟的坐标</p>
+<p>是通过话题 &#x2F;乌龟名称&#x2F;pose 来获取的</p>
+<pre class="line-numbers language-none"><code class="language-none">x: 1.0 &#x2F;&#x2F;x坐标
+y: 1.0 &#x2F;&#x2F;y坐标
+theta: -1.21437060833 &#x2F;&#x2F;角度
+linear_velocity: 0.0 &#x2F;&#x2F;线速度
+angular_velocity: 1.0 &#x2F;&#x2F;角速度<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><strong>获取消息格式:</strong> </p>
-<pre class="line-numbers language-none"><code class="language-none">rossrv info turtlesim&#x2F;Spawn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="1-创建功能包"><a href="#1-创建功能包" class="headerlink" title="1. 创建功能包"></a>1. 创建功能包</h3><p>创建项目功能包依赖于 tf2、tf2_ros、tf2_geometry_msgs、roscpp rospy std_msgs geometry_msgs、turtlesim</p>
+<pre class="line-numbers language-none"><code class="language-none">catkin_create_pkg tflearn tf2 tf2_ros tf2_geometry_msgs roscpp rospy std_msgs geometry_msgs turtlesim
 
-<p><strong>响应结果:</strong> </p>
-<pre class="line-numbers language-none"><code class="language-none">float32 x
-float32 y
-float32 theta
-string name
----
-string name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+cd tflearn
 
-<h3 id="2-服务客户端实现"><a href="#2-服务客户端实现" class="headerlink" title="2. 服务客户端实现"></a>2. 服务客户端实现</h3><p>本次案例在<code>ROS实操_话题发布</code>创建的<code>dotopic</code>功能包内进行，因此无需开展功能的包的创建等相关操作，只需在<code>scripts</code>目录内配置订阅节点相关的python文件即可。</p>
-<pre class="line-numbers language-none"><code class="language-none">touch service_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+mkdir scripts
 
+touch tf_service.py
+touch tf_publisher.py
+touch tf_subscriber.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-服务客户端（生成乌龟）"><a href="#2-服务客户端（生成乌龟）" class="headerlink" title="2. 服务客户端（生成乌龟）"></a>2. 服务客户端（生成乌龟）</h3><p><code>tf_service.py</code></p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
 <span class="token comment"># coding=utf-8</span>
-<span class="token triple-quoted-string string">"""
-    生成一只小乌龟
-    准备工作:
-        1.服务话题 /spawn
-        2.服务消息类型 turtlesim/Spawn
-        3.运行前先启动 turtlesim_node 节点
-
-    实现流程:
+<span class="token triple-quoted-string string">"""  
+    调用 service 服务在窗体指定位置生成一只乌龟
+    流程:
         1.导包
-          需要包含 turtlesim 包下资源，注意在 package.xml 配置
         2.初始化 ros 节点
-        3.创建 service 客户端
+        3.创建服务客户端
         4.等待服务启动
-        5.发送请求
-        6.处理响应
-
+        5.创建请求数据
+        6.发送请求并处理响应
 """</span>
-
+<span class="token comment">#1.导包</span>
 <span class="token keyword">import</span> rospy
-<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>srv <span class="token keyword">import</span> Spawn<span class="token punctuation">,</span>SpawnRequest<span class="token punctuation">,</span>SpawnResponse
+<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>srv <span class="token keyword">import</span> Spawn<span class="token punctuation">,</span> SpawnRequest<span class="token punctuation">,</span> SpawnResponse
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
     <span class="token comment"># 2.初始化 ros 节点</span>
-    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"set_turtle_p"</span><span class="token punctuation">)</span>
-    <span class="token comment"># 3.创建 service 客户端</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"turtle_spawn_p"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 3.创建服务客户端</span>
     client <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">"/spawn"</span><span class="token punctuation">,</span>Spawn<span class="token punctuation">)</span>
     <span class="token comment"># 4.等待服务启动</span>
     client<span class="token punctuation">.</span>wait_for_service<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token comment"># 5.发送请求</span>
+    <span class="token comment"># 5.创建请求数据</span>
     req <span class="token operator">=</span> SpawnRequest<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    req<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">2.0</span>
-    req<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">2.0</span>
-    req<span class="token punctuation">.</span>theta <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1.57</span>
-    req<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"my_turtle_p"</span>
+    req<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">1.0</span>
+    req<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">1.0</span>
+    req<span class="token punctuation">.</span>theta <span class="token operator">=</span> <span class="token number">3.14</span>
+    req<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"turtle2"</span>
+    <span class="token comment"># 6.发送请求并处理响应</span>
     <span class="token keyword">try</span><span class="token punctuation">:</span>
         response <span class="token operator">=</span> client<span class="token punctuation">.</span>call<span class="token punctuation">(</span>req<span class="token punctuation">)</span>
-        <span class="token comment"># 6.处理响应</span>
-        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"乌龟创建成功!，叫:%s"</span><span class="token punctuation">,</span>response<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
-    <span class="token keyword">except</span> expression <span class="token keyword">as</span> identifier<span class="token punctuation">:</span>
-        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"服务调用失败"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"乌龟创建成功，名字是:%s"</span><span class="token punctuation">,</span>response<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"服务调用失败...."</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">chmod +x sub_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="3-发布方（发布两只乌龟的坐标信息）"><a href="#3-发布方（发布两只乌龟的坐标信息）" class="headerlink" title="3. 发布方（发布两只乌龟的坐标信息）"></a>3. 发布方（发布两只乌龟的坐标信息）</h3><p><code>tf_publisher.py</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># coding=utf-8</span>
+<span class="token triple-quoted-string string">"""  
+    该文件实现:需要订阅 turtle1 和 turtle2 的 pose，然后广播相对 world 的坐标系信息
 
-<p>编辑<code>dotopic</code>下的<strong>CmakeLists.txt文件</strong> </p>
+    注意: 订阅的两只 turtle,除了命名空间(turtle1 和 turtle2)不同外,
+          其他的话题名称和实现逻辑都是一样的，
+          所以我们可以将所需的命名空间通过 args 动态传入
+
+    实现流程:
+        1.导包
+        2.初始化 ros 节点
+        3.解析传入的命名空间
+        4.创建订阅对象
+        5.回调函数处理订阅的 pose 信息
+            5-1.创建 TF 广播器
+            5-2.将 pose 信息转换成 TransFormStamped
+            5-3.发布
+        6.spin
+"""</span>
+<span class="token comment"># 1.导包</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> sys
+<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Pose
+<span class="token keyword">from</span> geometry_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> TransformStamped
+<span class="token keyword">import</span> tf2_ros
+<span class="token keyword">import</span> tf_conversions
+
+turtle_name <span class="token operator">=</span> <span class="token string">""</span>
+
+<span class="token keyword">def</span> <span class="token function">doPose</span><span class="token punctuation">(</span>pose<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># rospy.loginfo("x = %.2f",pose.x)</span>
+    <span class="token comment">#1.创建坐标系广播器</span>
+    broadcaster <span class="token operator">=</span> tf2_ros<span class="token punctuation">.</span>TransformBroadcaster<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">#2.将 pose 信息转换成 TransFormStamped</span>
+    tfs <span class="token operator">=</span> TransformStamped<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    tfs<span class="token punctuation">.</span>header<span class="token punctuation">.</span>frame_id <span class="token operator">=</span> <span class="token string">"world"</span>
+    tfs<span class="token punctuation">.</span>header<span class="token punctuation">.</span>stamp <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Time<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    tfs<span class="token punctuation">.</span>child_frame_id <span class="token operator">=</span> turtle_name
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>x <span class="token operator">=</span> pose<span class="token punctuation">.</span>x
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>y <span class="token operator">=</span> pose<span class="token punctuation">.</span>y
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>z <span class="token operator">=</span> <span class="token number">0.0</span>
+
+    qtn <span class="token operator">=</span> tf_conversions<span class="token punctuation">.</span>transformations<span class="token punctuation">.</span>quaternion_from_euler<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> pose<span class="token punctuation">.</span>theta<span class="token punctuation">)</span>
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> qtn<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>y <span class="token operator">=</span> qtn<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z <span class="token operator">=</span> qtn<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+    tfs<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>w <span class="token operator">=</span> qtn<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+
+    <span class="token comment">#3.广播器发布 tfs</span>
+    broadcaster<span class="token punctuation">.</span>sendTransform<span class="token punctuation">(</span>tfs<span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment"># 2.初始化 ros 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"sub_tfs_p"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 3.解析传入的命名空间</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"-------------------------------%d"</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">:</span>
+        rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"请传入参数:乌龟的命名空间"</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        turtle_name <span class="token operator">=</span> sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string">"///////////////////乌龟:%s"</span><span class="token punctuation">,</span>turtle_name<span class="token punctuation">)</span>
+
+    rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span>turtle_name <span class="token operator">+</span> <span class="token string">"/pose"</span><span class="token punctuation">,</span>Pose<span class="token punctuation">,</span>doPose<span class="token punctuation">)</span>
+    <span class="token comment">#     4.创建订阅对象</span>
+    <span class="token comment">#     5.回调函数处理订阅的 pose 信息</span>
+    <span class="token comment">#         5-1.创建 TF 广播器</span>
+    <span class="token comment">#         5-2.将 pose 信息转换成 TransFormStamped</span>
+    <span class="token comment">#         5-3.发布</span>
+    <span class="token comment">#     6.spin</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-订阅方（解析坐标信息并生成速度信息）"><a href="#4-订阅方（解析坐标信息并生成速度信息）" class="headerlink" title="4. 订阅方（解析坐标信息并生成速度信息）"></a>4. 订阅方（解析坐标信息并生成速度信息）</h3><p><code>tf_subscriber.py</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#! /usr/bin/env python</span>
+<span class="token comment"># coding=utf-8</span>
+<span class="token triple-quoted-string string">"""  
+    订阅 turtle1 和 turtle2 的 TF 广播信息，查找并转换时间最近的 TF 信息
+    将 turtle1 转换成相对 turtle2 的坐标，在计算线速度和角速度并发布
+
+    实现流程:
+        1.导包
+        2.初始化 ros 节点
+        3.创建 TF 订阅对象
+        4.处理订阅到的 TF
+            4-1.查找坐标系的相对关系
+            4-2.生成速度信息，然后发布
+"""</span>
+<span class="token comment"># 1.导包</span>
+<span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> tf2_ros
+<span class="token keyword">from</span> geometry_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> TransformStamped<span class="token punctuation">,</span> Twist
+<span class="token keyword">import</span> math
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token comment"># 2.初始化 ros 节点</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">"sub_tfs_p"</span><span class="token punctuation">)</span>
+    <span class="token comment"># 3.创建 TF 订阅对象</span>
+    <span class="token builtin">buffer</span> <span class="token operator">=</span> tf2_ros<span class="token punctuation">.</span>Buffer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    listener <span class="token operator">=</span> tf2_ros<span class="token punctuation">.</span>TransformListener<span class="token punctuation">(</span><span class="token builtin">buffer</span><span class="token punctuation">)</span>
+    <span class="token comment"># 4.处理订阅到的 TF</span>
+    rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token comment"># 创建速度发布对象</span>
+    pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string">"/turtle2/cmd_vel"</span><span class="token punctuation">,</span>Twist<span class="token punctuation">,</span>queue_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+    <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+        rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            <span class="token comment">#def lookup_transform(self, target_frame, source_frame, time, timeout=rospy.Duration(0.0)):</span>
+            trans <span class="token operator">=</span> <span class="token builtin">buffer</span><span class="token punctuation">.</span>lookup_transform<span class="token punctuation">(</span><span class="token string">"turtle2"</span><span class="token punctuation">,</span><span class="token string">"turtle1"</span><span class="token punctuation">,</span>rospy<span class="token punctuation">.</span>Time<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token comment"># rospy.loginfo("相对坐标:(%.2f,%.2f,%.2f)",</span>
+            <span class="token comment">#             trans.transform.translation.x,</span>
+            <span class="token comment">#             trans.transform.translation.y,</span>
+            <span class="token comment">#             trans.transform.translation.z</span>
+            <span class="token comment">#             )   </span>
+            <span class="token comment"># 根据转变后的坐标计算出速度和角速度信息</span>
+            twist <span class="token operator">=</span> Twist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment"># 间距 = x^2 + y^2  然后开方</span>
+            twist<span class="token punctuation">.</span>linear<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>math<span class="token punctuation">.</span><span class="token builtin">pow</span><span class="token punctuation">(</span>trans<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>x<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> math<span class="token punctuation">.</span><span class="token builtin">pow</span><span class="token punctuation">(</span>trans<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>y<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            twist<span class="token punctuation">.</span>angular<span class="token punctuation">.</span>z <span class="token operator">=</span> <span class="token number">4</span> <span class="token operator">*</span> math<span class="token punctuation">.</span>atan2<span class="token punctuation">(</span>trans<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>y<span class="token punctuation">,</span> trans<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>translation<span class="token punctuation">.</span>x<span class="token punctuation">)</span>
+
+            pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>twist<span class="token punctuation">)</span>
+
+        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+            rospy<span class="token punctuation">.</span>logwarn<span class="token punctuation">(</span><span class="token string">"警告:%s"</span><span class="token punctuation">,</span>e<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">chmod +x tf_service.py
+chmod +x tf_publisher.py
+chmod +x tf_subscriber.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>编辑<code>tflearn</code>下的<strong>CmakeLists.txt文件</strong></p>
 <pre class="line-numbers language-none"><code class="language-none">catkin_install_python(PROGRAMS 
-  scripts&#x2F;pub_topic.py
-  scripts&#x2F;sub_topic.py
-  scripts&#x2F;service_topic.py
+  scripts&#x2F;tf_service.py
+  scripts&#x2F;tf_publisher.py
+  scripts&#x2F;tf_subscriber.py
   DESTINATION $&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;
 )<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-运行"><a href="#3-运行" class="headerlink" title="3. 运行"></a>3. 运行</h3><p>工作空间下，编译并初始化环境变量</p>
+<h3 id="5-运行"><a href="#5-运行" class="headerlink" title="5. 运行"></a>5. 运行</h3><p>使用 launch 文件组织需要运行的节点，内容示例如下:</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;launch&gt;
+    &lt;node pkg&#x3D;&quot;turtlesim&quot; type&#x3D;&quot;turtlesim_node&quot; name&#x3D;&quot;turtle1&quot; output&#x3D;&quot;screen&quot; &#x2F;&gt;
+    &lt;node pkg&#x3D;&quot;turtlesim&quot; type&#x3D;&quot;turtle_teleop_key&quot; name&#x3D;&quot;key_control&quot; output&#x3D;&quot;screen&quot;&#x2F;&gt;
+
+    &lt;node pkg&#x3D;&quot;demo06_test_flow_p&quot; type&#x3D;&quot;test01_turtle_spawn_p.py&quot; name&#x3D;&quot;turtle_spawn&quot; output&#x3D;&quot;screen&quot;&#x2F;&gt;
+
+    &lt;node pkg&#x3D;&quot;demo06_test_flow_p&quot; type&#x3D;&quot;test02_turtle_tf_pub_p.py&quot; name&#x3D;&quot;tf_pub1&quot; args&#x3D;&quot;turtle1&quot; output&#x3D;&quot;screen&quot;&#x2F;&gt;
+    &lt;node pkg&#x3D;&quot;demo06_test_flow_p&quot; type&#x3D;&quot;test02_turtle_tf_pub_p.py&quot; name&#x3D;&quot;tf_pub2&quot; args&#x3D;&quot;turtle2&quot; output&#x3D;&quot;screen&quot;&#x2F;&gt;
+    &lt;node pkg&#x3D;&quot;demo06_test_flow_p&quot; type&#x3D;&quot;test03_turtle_tf_sub_p.py&quot; name&#x3D;&quot;tf_sub&quot; output&#x3D;&quot;screen&quot;&#x2F;&gt;
+
+&lt;&#x2F;launch&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>工作空间下，编译并初始化环境变量</p>
 <pre class="line-numbers language-none"><code class="language-none">catkin_make
 source devel&#x2F;setup.bash
 
-roscore
-
-rosrun turtlesim turtlesim_node
-rosrun dotopic pub_topic.py
-rosrun dotopic service_topic.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+roslaunch tflearn tf_learn.launch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -508,7 +655,7 @@ rosrun dotopic service_topic.py<span aria-hidden="true" class="line-numbers-rows
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/03/10/ros-shi-cao-fu-wu-diao-yong/">https://kolbey.github.io/2023/03/10/ros-shi-cao-fu-wu-diao-yong/</a>
+                    <a href="https://kolbey.github.io/2023/03/10/ros-shi-cao-tf-zuo-biao-bian-huan/">https://kolbey.github.io/2023/03/10/ros-shi-cao-tf-zuo-biao-bian-huan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -593,29 +740,30 @@ rosrun dotopic service_topic.py<span aria-hidden="true" class="line-numbers-rows
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/10/ros-shi-cao-can-shu-she-zhi/">
+                <a href="/2023/03/10/ros-shi-cao-tf-zuo-biao-bian-huan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="ROS实操_参数设置">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="ROS实操_TF坐标变换">
                         
-                        <span class="card-title">ROS实操_参数设置</span>
+                        <span class="card-title">ROS实操_TF坐标变换</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS实操_参数设置
+                            ROS实操_TF坐标变换
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -628,6 +776,7 @@ rosrun dotopic service_topic.py<span aria-hidden="true" class="line-numbers-rows
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -646,19 +795,19 @@ rosrun dotopic service_topic.py<span aria-hidden="true" class="line-numbers-rows
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/10/ros-shi-cao-hua-ti-ding-yue/">
+                <a href="/2023/03/10/ros-jie-dian-yun-xing-guan-li-launch-wen-jian/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="ROS实操_话题订阅">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="ROS节点运行管理launch文件">
                         
-                        <span class="card-title">ROS实操_话题订阅</span>
+                        <span class="card-title">ROS节点运行管理launch文件</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ROS实操_话题订阅
+                            ROS节点运行管理launch文件
                         
                     </div>
                     <div class="publish-info">
