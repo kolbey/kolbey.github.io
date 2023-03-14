@@ -392,17 +392,17 @@
 </blockquote>
 <h3 id="2-论文主要内容"><a href="#2-论文主要内容" class="headerlink" title="2. 论文主要内容"></a>2. 论文主要内容</h3><p><img src="/./images/Computer_Vision/0.jpg"></p>
 <p>自然场景下存在着各种不良光照场景，如低光照环境和摄影造成的过(欠)曝光环境，相机在不良光照下完成摄影任务时，因为接收到过多&#x2F;过少的光子数量，和相机内部的处理过程 (如低光照场景需要调高ISO，这会导致噪声也同时放大)，往往得到的图像也会收到影响，无论从视觉感观还是完成一些视觉任务（如检测，分割等）都会受到影响。区别于传统的HE或者RetiNex做法以及此前的CNN做法，作者提出了Illimination-Adaptive-Transformer (IAT), IAT模型借鉴了目标检测网络DETR思路，通过动态query学习的机制来调整计算摄影中的一些相关参数，建立了一个end-to-end的Transformer，来克服这些不良光照所造成的视觉感观&#x2F;视觉任务影响。</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;1.png)</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;2.png)</p>
+<p><img src="/./images/Computer_Vision/1.png"></p>
+<p><img src="/./images/Computer_Vision/2.png"></p>
 <p>在实验部分，作者做了大量的实验，包括低光照增强&#x2F;曝光矫正，以及低光照场景下的目标检测，低光照场景下的语义分割，以及复杂光照场景下的目标检测。具体而言，低光照增强用的是<strong>LOL-V1</strong>和<strong>LOL-V2-real</strong>数据集；曝光矫正采用的是<strong>Exposure</strong>数据集。低光照检测&#x2F;分割方面，作者分别用低光照检测数据集EXDark和低光照分割数据集ACDC以及多光源场景检测数据集TYOL进行验证。检测器采用的是YOLOv3。</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;3.png)</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;4.png)</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;5.png)</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;6.png)</p>
+<p><img src="/./images/Computer_Vision/3.png"></p>
+<p><img src="/./images/Computer_Vision/4.png"></p>
+<p><img src="/./images/Computer_Vision/5.png"></p>
+<p><img src="/./images/Computer_Vision/6.png"></p>
 <p>可以看出低光照增强方法对于目标检测任务有些许提升，但是在后续的语义分割任务(e)上，增强算法反而无法提升目标的分割性能，这是由于图像增强算法与高层视觉算法的目的与评价指标不一致所导致的，图像增强是为了更好提升人眼视觉（评价指标PSNR,SSIM），而目标检测和语义分割属于机器视觉(评价指标mIOU, mAP)。</p>
 <p>针对于这种情况，作者采用了joint-training范式来训练网络，即将图像增强网络和后续检测分割网络联合，一起更新参数，其中图像增强网络还可以加载不同的预训练模型(如LOL数据集预训练和MIT-5K数据集预训练)。</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;7.png)</p>
-<p>![](.&#x2F;images&#x2F;Computer Vision&#x2F;8.png)</p>
+<p><img src="/./images/Computer_Vision/7.png"></p>
+<p><img src="/./images/Computer_Vision/8.png"></p>
 <h3 id="3-论文源码解析"><a href="#3-论文源码解析" class="headerlink" title="3. 论文源码解析"></a>3. 论文源码解析</h3><h4 id="3-1-IAT-model-py"><a href="#3-1-IAT-model-py" class="headerlink" title="3.1 IAT_model.py"></a>3.1 IAT_model.py</h4><p>IAT模型除了常规的导入<code>torch</code>、<code>numpy</code>外，还需要额外导入两个作者自己实现的一些模型结构细节，首先是<code>Global_pred</code>其次是<code>CBlock_ln</code>和<code>SwinTransformerBlock</code>。</p>
 <ul>
 <li><code>Global_pred.py</code></li>
@@ -1255,7 +1255,7 @@ output <span class="token operator">=</span> task_head<span class="token punctua
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">24.4k</span>
+                        class="white-color">24.3k</span>
             
             
             
