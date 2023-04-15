@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title></title>
+      <link href="/2023/04/15/git-ji-ben-cao-zuo/"/>
+      <url>/2023/04/15/git-ji-ben-cao-zuo/</url>
+      
+        <content type="html"><![CDATA[<p>-–</p><p>title: Git 基本操作</p><p>date: 2023-04-15 18:57:00</p><p>author: kolbey</p><p>img: </p><p>top: false</p><p>hide: false</p><p>cover: true</p><p>coverImg: </p><p>password: 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</p><p>toc: false</p><p>mathjax: false</p><p>summary: Git 基本操作</p><p>categories: Git 教程</p><p>tags:</p><p> - Git</p><p>-–</p><h3 id="Git-基本操作"><a href="#Git-基本操作" class="headerlink" title="Git 基本操作"></a>Git 基本操作</h3><p>Git 的工作就是创建和保存你项目的快照及与之后的快照进行对比。</p><p>Git 常用的是以下 6 个命令：<strong>git clone</strong>、<strong>git push</strong>、<strong>git add</strong> 、<strong>git commit</strong>、<strong>git checkout</strong>、<strong>git pull</strong>，后面我们会详细介绍。</p><p><img src="E:\blob\source\images\Git\0.png"></p><p><strong>说明：</strong></p><ul><li>workspace：工作区</li><li>staging area：暂存区&#x2F;缓存区</li><li>local repository：版本库或本地仓库</li><li>remote repository：远程仓库</li></ul><p>一个简单的操作步骤：</p><pre class="line-numbers language-none"><code class="language-none">git initgit add .git commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><ul><li>git init - 初始化仓库。</li><li>git add . - 添加文件到暂存区。</li><li>git commit - 将暂存区内容添加到仓库中。</li></ul><h4 id="创建仓库命令"><a href="#创建仓库命令" class="headerlink" title="创建仓库命令"></a>创建仓库命令</h4><p>下表列出了 git 创建仓库的命令：</p><table><thead><tr><th align="left">命令</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>git init</code></td><td align="left">初始化仓库</td></tr><tr><td align="left"><code>git clone</code></td><td align="left">拷贝一份远程仓库，也就是下载一个项目。</td></tr></tbody></table><h4 id="提交与修改"><a href="#提交与修改" class="headerlink" title="提交与修改"></a>提交与修改</h4><p>Git 的工作就是创建和保存你的项目的快照及与之后的快照进行对比。</p><p>下表列出了有关创建与提交你的项目的快照的命令：</p><table><thead><tr><th align="left">命令</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>git add</code></td><td align="left">添加文件到暂存区</td></tr><tr><td align="left"><code>git status</code></td><td align="left">查看仓库当前的状态，显示有变更的文件。</td></tr><tr><td align="left"><code>git diff</code></td><td align="left">比较文件的不同，即暂存区和工作区的差异。</td></tr><tr><td align="left"><code>git commit</code></td><td align="left">提交暂存区到本地仓库。</td></tr><tr><td align="left"><code>git reset</code></td><td align="left">回退版本。</td></tr><tr><td align="left"><code>git rm</code></td><td align="left">将文件从暂存区和工作区中删除。</td></tr><tr><td align="left"><code>git mv</code></td><td align="left">移动或重命名工作区文件。</td></tr></tbody></table><h4 id="提交日志"><a href="#提交日志" class="headerlink" title="提交日志"></a>提交日志</h4><table><thead><tr><th align="left">命令</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>git log</code></td><td align="left">查看历史提交记录</td></tr><tr><td align="left"><code>git blame &lt;file&gt;</code></td><td align="left">以列表形式查看指定文件的历史修改记录</td></tr></tbody></table><h4 id="远程操作"><a href="#远程操作" class="headerlink" title="远程操作"></a>远程操作</h4><table><thead><tr><th align="left">命令</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>git remote</code></td><td align="left">远程仓库操作</td></tr><tr><td align="left"><code>git fetch</code></td><td align="left">从远程获取代码库</td></tr><tr><td align="left"><code>git pull</code></td><td align="left">下载远程代码并合并</td></tr><tr><td align="left"><code>git push</code></td><td align="left">上传远程代码并合并</td></tr></tbody></table>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>NewCRFs (CVPR2022)</title>
       <link href="/2023/03/31/newcrfs-cvpr-2022/"/>
       <url>/2023/03/31/newcrfs-cvpr-2022/</url>
