@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>UnetFormer (ISPRS)</title>
+      <link href="/2023/04/28/unetformer-isprs/"/>
+      <url>/2023/04/28/unetformer-isprs/</url>
+      
+        <content type="html"><![CDATA[<h1 id="UNetFormer-A-UNet-like-Transformer-for-Efficient-Semantic-Segmentation-of-Remote-Sensing-Urban-Scene-Imagery"><a href="#UNetFormer-A-UNet-like-Transformer-for-Efficient-Semantic-Segmentation-of-Remote-Sensing-Urban-Scene-Imagery" class="headerlink" title="UNetFormer: A UNet-like Transformer for Efficient Semantic Segmentation of Remote Sensing Urban Scene Imagery"></a>UNetFormer: A UNet-like Transformer for Efficient Semantic Segmentation of Remote Sensing Urban Scene Imagery</h1><h3 id="0-写在前面"><a href="#0-写在前面" class="headerlink" title="0. 写在前面"></a>0. 写在前面</h3><p>这篇文章提出了基于UNet的Transformer（UNetFormer）算法，通过使用一个由CNN构成的编码器和一个由Transformer构成的解码器的混合架构，实现了高效的遥感城市场景图像语义分割，相较于CNN范式性能具有显著提升。</p><h3 id="1-基本信息"><a href="#1-基本信息" class="headerlink" title="1. 基本信息"></a>1. 基本信息</h3><blockquote><ul><li><a href="https://arxiv.org/ftp/arxiv/papers/2109/2109.08937.pdf">论文链接</a></li><li><a href="https://github.com/WangLibo1995/GeoSeg">代码链接</a></li></ul></blockquote><h3 id="2-主要内容"><a href="#2-主要内容" class="headerlink" title="2. 主要内容"></a>2. 主要内容</h3><p>![](.&#x2F;images&#x2F;semantic segmentation&#x2F;UnetFormer&#x2F;0.png)</p><p>ResNet18由四个阶段的Resblocks组成，每阶段以2的比例因子对feature map进行下采样。每一阶段生成的特征图都与解码器对应的特征图进行1×1卷积（通道数为64），即跳接。具体来说，通过加权求和将残差块产生的特征与解码器的GLTB（全局-局部transfomer块）产生的特征进行聚合。加权和操作根据两个特征对分割精度的贡献有选择地对它们加权，从而学习更一般性的融合特征。加权和操作的公式为：</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\2.png)</p><p>为了捕捉全局上下文，在网络末端附加单个注意力块 (Wang et al., 2018)，但无法捕捉多尺度的全局特征；引入transformer作为编码器(Chen et al.， 2021b)，但显著增加了复杂度，并丢失了空间细节。相比之下，在提出的UNetFormer中，利用三个GLTB和一个特征细化头来构建一个轻量级的基于transformer的解码器，如上图所示。通过这种分层和轻量级的设计，解码器能够在多个尺度上捕捉全局和局部上下文，同时保持高效率。</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\1.png)</p><p>GLTB由全局-局部注意、MLP、两个batchnorm层和两个加和操作组成，全局分支中的WMHSA来自Swin提出的窗口多头自注意。</p><p><strong>Efficient Global-local attention</strong>：局部分支是一个较浅层的结构，如下图右边蓝色框，它使用两个并行的卷积层来提取局部上下文，内核大小分别为3和1。然后在最终的求和操作之前附加两个batchnorm。</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\3.png)</p><p>全局分支如上图左侧绿色框，首先使用一个标准1×1卷积层将输入的2D特征图的通道数扩展到三倍。然后，应用窗口划分操作将1D序列划分为Q, K, V。通道数C设为64，窗口大小w和头的数量h都设为8。</p><p><strong>cross-shaped window context interaction module</strong>：Swin Transformer引入了一个额外的可移动Transformer块来挖掘局部窗口之间的关系。尽管捕捉跨窗口关系的能力增加了，但计算量也大幅增加。在本文中，提出了一个十字形窗口上下文交互模块来捕获跨窗口关系，具有较高的计算效率。</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\4.png)</p><p>将水平平均池化层和垂直平均池化层产生的两种特征图融合，从而获取全局上下文。具体来说，水平平均池层建立了窗口之间的水平关系。对于窗口1中的任何一点 P1 ，它对窗口2中P2 的依赖可以建模为：</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\5.png)</p><p>D表示自注意计算，它可以在一个局部窗口中对像素对的依赖性建模。对于M×M输入(M表示窗口的数量)，通过连接更多的中间窗口，如窗口2和窗口3，任意两个窗口之间的长期依赖可以建模。因此，十字形窗口上下文交互模块可以对窗口的远程依赖关系建模，从而捕获全局上下文。</p><p>**Feature refinement head (特征细化头)**：第一个Resblock产生的浅层特征保留了丰富的城市场景空间细节，但缺乏语义内容；而深层的全局-局部特征提供了精确的语义信息，但空间分辨率较粗。对这两个特征直接求和，虽然速度快，但会降低分割精度。在本文中，开发了一个特征细化头FRH，以缩小两个特征之间的语义差距，进一步提高准确性。</p><p>首先对两个特征进行加权和运算，以充分利用精确的语义信息和空间细节。然后选择融合特征作为FRH的输入。其次，构建了两条路径来加强信道和空间特征表示。</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\6.png)</p><p><strong>损失函数：</strong></p><p>主损失</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\7.png)</p><p>辅助损失</p><p>![](E:\blob\source\images\semantic segmentation\UnetFormer\8.png)</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Computer Vision </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Semantic Segmentation </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Git 基本操作</title>
       <link href="/2023/04/15/git-ji-ben-cao-zuo/"/>
       <url>/2023/04/15/git-ji-ben-cao-zuo/</url>
