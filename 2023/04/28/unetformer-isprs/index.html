@@ -345,7 +345,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-04-28
+                    2023-05-08
                 </div>
                 
 
@@ -403,7 +403,7 @@
 <p>将水平平均池化层和垂直平均池化层产生的两种特征图融合，从而获取全局上下文。具体来说，水平平均池层建立了窗口之间的水平关系。对于窗口1中的任何一点 P1 ，它对窗口2中P2 的依赖可以建模为：</p>
 <p><img src="/./images/semantic_segmentation/UnetFormer/5.png"></p>
 <p>D表示自注意计算，它可以在一个局部窗口中对像素对的依赖性建模。对于M×M输入(M表示窗口的数量)，通过连接更多的中间窗口，如窗口2和窗口3，任意两个窗口之间的长期依赖可以建模。因此，十字形窗口上下文交互模块可以对窗口的远程依赖关系建模，从而捕获全局上下文。</p>
-<p>**Feature refinement head (特征细化头)**：第一个Resblock产生的浅层特征保留了丰富的城市场景空间细节，但缺乏语义内容；而深层的全局-局部特征提供了精确的语义信息，但空间分辨率较粗。对这两个特征直接求和，虽然速度快，但会降低分割精度。在本文中，开发了一个特征细化头FRH，以缩小两个特征之间的语义差距，进一步提高准确性。</p>
+<p><strong>Feature refinement head (特征细化头)</strong> ：第一个Resblock产生的浅层特征保留了丰富的城市场景空间细节，但缺乏语义内容；而深层的全局-局部特征提供了精确的语义信息，但空间分辨率较粗。对这两个特征直接求和，虽然速度快，但会降低分割精度。在本文中，开发了一个特征细化头FRH，以缩小两个特征之间的语义差距，进一步提高准确性。</p>
 <p>首先对两个特征进行加权和运算，以充分利用精确的语义信息和空间细节。然后选择融合特征作为FRH的输入。其次，构建了两条路径来加强信道和空间特征表示。</p>
 <p><img src="/./images/semantic_segmentation/UnetFormer/6.png"></p>
 <p><strong>损失函数：</strong></p>
@@ -899,30 +899,29 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/04/28/unetformer-isprs/">
+                <a href="/2023/05/08/tctrack-cvpr-2022/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="UnetFormer (ISPRS)">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="TCTrack (CVPR 2022)">
                         
-                        <span class="card-title">UnetFormer (ISPRS)</span>
+                        <span class="card-title">TCTrack (CVPR 2022)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            UnetFormer (ISPRS)
+                            TCTrack (CVPR 2022)
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-28
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-08
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -935,12 +934,11 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Semantic-Segmentation/">
-                        <span class="chip bg-color">Semantic Segmentation</span>
+                    <a href="/tags/Object-Tracking/">
+                        <span class="chip bg-color">Object Tracking</span>
                     </a>
                     
                 </div>
@@ -1052,7 +1050,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.2k</span>
+                        class="white-color">34.5k</span>
             
             
             

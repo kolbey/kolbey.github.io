@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Git 基本操作, Kolbey">
-    <meta name="description" content="Git 基本操作">
+    <meta name="keywords" content="标签: Object Tracking, Kolbey">
+    <meta name="description" content="Kolbey">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Git 基本操作 | Kolbey</title>
+    <title>标签: Object Tracking | Kolbey</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -38,7 +38,9 @@
 
 
 
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
     <link rel="stylesheet" href="/css/post.css">
+
 
 
 
@@ -282,461 +284,186 @@
 
 </header>
 
-    
+    <div class="bg-cover pd-header about-cover">
+    <div class="container">
+    <div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                Kolbey
+                
+            </div>
 
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">Git 基本操作</h1>
-                </div>
+            <div class="description center-align">
+                
+                <span id="subtitle"></span>
+                <script src="/libs/typed/typed.js"></script>
+                <script>
+                    var typed = new Typed("#subtitle", {
+                        strings: [ 
+                            
+                                "从来没有真正的绝境, 只有心灵的迷途",
+                            
+                                "Never really desperate, only the lost of the soul",
+                            
+                                "没有真正的绝境, 只有心灵的迷途!",
+                            
+                                "Never really desperate, only the lost of the soul!",
+                            
+                        ],
+                        startDelay: 300,
+                        typeSpeed: 100,
+                        loop: true,
+                        backSpeed: 50,
+                        showCursor: true
+                    });
+                </script>
+                
             </div>
         </div>
     </div>
 </div>
 
 
+<script>
+    // 每天切换 banner 图.  Switch banner image every day.
+    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+</script>
 
 
-<main class="container content">
+    </div>
+</div>
+
+<main class="content">
 
     
-    <!-- 文章内容详情 -->
-<div id="artDetail">
+
+<div id="tags" class="container chip-container">
     <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Git/">
-                                <span class="chip bg-color">Git</span>
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/Tutorial/" class="post-category">
-                                Tutorial
-                            </a>
-                        
-                    </div>
-                    
-                </div>
+        <div class="card-content">
+            <div class="tag-title center-align">
+                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章标签
             </div>
-
-            <div class="post-info">
+            <div class="tag-chips">
                 
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-04-15
-                </div>
                 
-
+                <a href="/tags/MMDetection/" title="MMDetection: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="MMDetection" style="background-color: #F9EBEA;">MMDetection
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
                 
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-04-28
-                </div>
                 
-
+                <a href="/tags/ROS/" title="ROS: 13">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="ROS" style="background-color: #F5EEF8;">ROS
+                        <span class="tag-length">13</span>
+                    </span>
+                </a>
                 
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    436
-                </div>
                 
-
+                <a href="/tags/Git/" title="Git: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Git" style="background-color: #D5F5E3;">Git
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
                 
-                <div class="info-break-policy">
-                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
-                </div>
                 
-
+                <a href="/tags/Semantic-Segmentation/" title="Semantic Segmentation: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Semantic Segmentation" style="background-color: #E8F8F5;">Semantic Segmentation
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
                 
-                    <div id="busuanzi_container_page_pv" class="info-break-policy">
-                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
-                        <span id="busuanzi_value_page_pv"></span>
-                    </div>
-				
+                
+                <a href="/tags/Image-Processing/" title="Image Processing: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Image Processing" style="background-color: #FEF9E7;">Image Processing
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Depth-Estimation/" title="Depth Estimation: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Depth Estimation" style="background-color: #F8F9F9;">Depth Estimation
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Backbone-Network/" title="Backbone Network: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Backbone Network" style="background-color: #82E0AA;">Backbone Network
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Object-Tracking/" title="Object Tracking: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            data-tagname="Object Tracking" style="background-color: #D7BDE2;">Object Tracking
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
             </div>
         </div>
-        <hr class="clearfix">
-
-        
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
-        
-
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <h3 id="Git-基本操作"><a href="#Git-基本操作" class="headerlink" title="Git 基本操作"></a>Git 基本操作</h3><p>Git 的工作就是创建和保存你项目的快照及与之后的快照进行对比。</p>
-<p>Git 常用的是以下 6 个命令：<strong>git clone</strong>、<strong>git push</strong>、<strong>git add</strong> 、<strong>git commit</strong>、<strong>git checkout</strong>、<strong>git pull</strong>，后面我们会详细介绍。</p>
-<p><img src="/./images/Git/0.png"></p>
-<p><strong>说明：</strong></p>
-<ul>
-<li>workspace：工作区</li>
-<li>staging area：暂存区&#x2F;缓存区</li>
-<li>local repository：版本库或本地仓库</li>
-<li>remote repository：远程仓库</li>
-</ul>
-<p>一个简单的操作步骤：</p>
-<pre class="line-numbers language-none"><code class="language-none">git init
-git add .
-git commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<ul>
-<li>git init - 初始化仓库。</li>
-<li>git add . - 添加文件到暂存区。</li>
-<li>git commit - 将暂存区内容添加到仓库中。</li>
-</ul>
-<h4 id="创建仓库命令"><a href="#创建仓库命令" class="headerlink" title="创建仓库命令"></a>创建仓库命令</h4><p>下表列出了 git 创建仓库的命令：</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="center">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>git init</code></td>
-<td align="center">初始化仓库</td>
-</tr>
-<tr>
-<td align="left"><code>git clone</code></td>
-<td align="center">拷贝一份远程仓库，也就是下载一个项目。</td>
-</tr>
-</tbody></table>
-<h4 id="提交与修改"><a href="#提交与修改" class="headerlink" title="提交与修改"></a>提交与修改</h4><p>Git 的工作就是创建和保存你的项目的快照及与之后的快照进行对比。</p>
-<p>下表列出了有关创建与提交你的项目的快照的命令：</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>git add</code></td>
-<td align="left">添加文件到暂存区</td>
-</tr>
-<tr>
-<td align="left"><code>git status</code></td>
-<td align="left">查看仓库当前的状态，显示有变更的文件。</td>
-</tr>
-<tr>
-<td align="left"><code>git diff</code></td>
-<td align="left">比较文件的不同，即暂存区和工作区的差异。</td>
-</tr>
-<tr>
-<td align="left"><code>git commit</code></td>
-<td align="left">提交暂存区到本地仓库。</td>
-</tr>
-<tr>
-<td align="left"><code>git reset</code></td>
-<td align="left">回退版本。</td>
-</tr>
-<tr>
-<td align="left"><code>git rm</code></td>
-<td align="left">将文件从暂存区和工作区中删除。</td>
-</tr>
-<tr>
-<td align="left"><code>git mv</code></td>
-<td align="left">移动或重命名工作区文件。</td>
-</tr>
-</tbody></table>
-<h4 id="提交日志"><a href="#提交日志" class="headerlink" title="提交日志"></a>提交日志</h4><table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>git log</code></td>
-<td align="left">查看历史提交记录</td>
-</tr>
-<tr>
-<td align="left"><code>git blame &lt;file&gt;</code></td>
-<td align="left">以列表形式查看指定文件的历史修改记录</td>
-</tr>
-</tbody></table>
-<h4 id="远程操作"><a href="#远程操作" class="headerlink" title="远程操作"></a>远程操作</h4><table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>git remote</code></td>
-<td align="left">远程仓库操作</td>
-</tr>
-<tr>
-<td align="left"><code>git fetch</code></td>
-<td align="left">从远程获取代码库</td>
-</tr>
-<tr>
-<td align="left"><code>git pull</code></td>
-<td align="left">下载远程代码并合并</td>
-</tr>
-<tr>
-<td align="left"><code>git push</code></td>
-<td align="left">上传远程代码并合并</td>
-</tr>
-</tbody></table>
-
-                
-            </div>
-            <hr/>
-
-            
-
-    <div class="reprint" id="reprint-statement">
-        
-            <div class="reprint__author">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-user">
-                        文章作者:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">kolbey</a>
-                </span>
-            </div>
-            <div class="reprint__type">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-link">
-                        文章链接:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="https://kolbey.github.io/2023/04/15/git-ji-ben-cao-zuo/">https://kolbey.github.io/2023/04/15/git-ji-ben-cao-zuo/</a>
-                </span>
-            </div>
-            <div class="reprint__notice">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-copyright">
-                        版权声明:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    本博客所有文章除特別声明外，均采用
-                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
-                    许可协议。转载请注明来源
-                    <a href="/about" target="_blank">kolbey</a>
-                    !
-                </span>
-            </div>
-        
     </div>
+</div>
 
-    <script async defer>
-      document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
-        M.toast({html: toastHTML})
-      });
+    
 
-      function navToReprintStatement() {
-        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
-      }
-    </script>
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
+            
+            
+            <div class="article tag-post col s12 m6 l4" data-tags="Object Tracking" data-aos="fade-up">
+                <div class="card">
+                    <a href="/2023/05/08/tctrack-cvpr-2022/">
+                        <div class="card-image tag-image">
                             
-                                <a href="/tags/Git/">
-                                    <span class="chip bg-color">Git</span>
-                                </a>
                             
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="TCTrack (CVPR 2022)">
+                            
+                            <span class="card-title">TCTrack (CVPR 2022)</span>
                         </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="qq,qzone,wechat,weibo" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
-</div>
-
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-08
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/Computer-Vision/" class="post-category">
+                                Computer Vision
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
         </div>
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2023/04/28/unetformer-isprs/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="UnetFormer (ISPRS)">
-                        
-                        <span class="card-title">UnetFormer (ISPRS)</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            UnetFormer (ISPRS)
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-28
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Computer-Vision/" class="post-category">
-                                    Computer Vision
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Semantic-Segmentation/">
-                        <span class="chip bg-color">Semantic Segmentation</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/03/31/newcrfs-cvpr-2022/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="NewCRFs (CVPR2022)">
-                        
-                        <span class="card-title">NewCRFs (CVPR2022)</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            NewCRFs (CVPR2022)
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-31
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Computer-Vision/" class="post-category">
-                                    Computer Vision
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Depth-Estimation/">
-                        <span class="chip bg-color">Depth Estimation</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
-</article>
-
-</div>
-
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-
-    
-
+    </article>
 </main>
 
 
