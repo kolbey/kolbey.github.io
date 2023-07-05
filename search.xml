@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>KAD (nature 子刊)</title>
+      <link href="/2023/07/05/kad-nature-zi-kan/"/>
+      <url>/2023/07/05/kad-nature-zi-kan/</url>
+      
+        <content type="html"><![CDATA[<h3 id="Knowledge-enhanced-Visual-Language-Pre-training-on-Chest-Radiology-Images"><a href="#Knowledge-enhanced-Visual-Language-Pre-training-on-Chest-Radiology-Images" class="headerlink" title="Knowledge-enhanced Visual-Language Pre-training on Chest Radiology Images"></a>Knowledge-enhanced Visual-Language Pre-training on Chest Radiology Images</h3><h3 id="0-写在前面"><a href="#0-写在前面" class="headerlink" title="0. 写在前面"></a>0. 写在前面</h3><p>该模型通过在大规模医学影像与放射报告数据进行预训练，通过文本编码器对高质量医疗知识图谱进行隐空间嵌入，利用视觉 - 语言模型联合训练实现了知识增强的表征学习。在不需要任何额外标注情况下，KAD 模型即可直接应用于任意胸片相关疾病的诊断，为开发人工智能辅助诊断的基础模型提供了一条切实可行的技术路线。</p><h3 id="1-论文基本信息"><a href="#1-论文基本信息" class="headerlink" title="1. 论文基本信息"></a>1. 论文基本信息</h3><blockquote><ul><li><a href="https://arxiv.org/pdf/2302.14042.pdf">论文链接</a></li><li><a href="https://github.com/xiaoman-zhang/KAD">代码链接</a></li></ul></blockquote><h3 id="2-论文主要内容"><a href="#2-论文主要内容" class="headerlink" title="2. 论文主要内容"></a>2. 论文主要内容</h3><p>KAD 模型的核心是利用医学先验知识引导基础模型预训练，第一阶段，该研究利用医学知识图谱训练一个文本知识编码器，对医学知识库在隐空间进行建模；第二阶段，该研究提出放射报告中提取医学实体和实体间关系，借助已训练的知识编码器来指导图像与文本对的视觉表征学习，最终实现了知识增强的模型预训练。具体流程如图 1 所示。</p><p><img src="/./images/Medical_AI/0.PNG"></p><p><strong>知识编码器</strong> </p><p>知识编码器的核心是在特征空间隐式地建立医学实体之间的关系。具体来说，该研究将统一医学语言系统 (Unified Medical Language System，UMLS) 作为医学知识库，如图 1a 所示；通过对比学习训练文本编码器，将医学知识注入模型，如图 1b 所示。</p><p><strong>知识引导的视觉表征学习</strong> </p><p>知识编码器训练完成后，模型在文本特征空间已经建立了医学实体之间的关系，即可用于引导视觉表征学习。具体来说，如图 1c 所示，基于胸片 - 报告对的数据，首先进行实体提取，得到常见疾病的集合及其标签，该研究尝试了三种方法：基于 UMLS 启发式规则的实体提取、基于报告结构化工具 RadGraph 的实体提取以及基于 ChatGPT 的实体提取；在模型层面，该研究提出了基于 Transformer 架构的疾病查询网络（Disease Query Networks），以疾病名称作为查询 (query) 输入，关注 (attend) 视觉特征以获得模型预测结果；在模型训练过程中，该研究联合优化图像 - 文本对比学习和疾病查询网络预测的多标签分类损失。</p><p>经过上述两阶段的训练，在模型使用阶段，如图 1d 所示，给定一张图像以及查询的疾病名称，分别输入图像编码器和知识编码器，经过疾病查询网络，即可得到查询疾病的预测。同时可以通过疾病查询网络得到注意力图对病灶进行定位，增强模型的可解释性。</p><h3 id="3-论文性能结果"><a href="#3-论文性能结果" class="headerlink" title="3. 论文性能结果"></a>3. 论文性能结果</h3><p>研究团队将仅在 MIMIC-CXR [1] 上使用图像和报告预训练的 KAD 模型，在多个具有不同数据分布的公开数据集上进行了系统性评测，包括 CheXpert [2], PadChest [3], NIH ChestX-ray [4] 和 CheXDet10 [5]。MIMIC-CXR 数据收集于贝斯以色列女执事医疗中心（Beth Israel Deaconess Medical Center,BIDMC）是，CheXpert 数据收集于美国斯坦福医院（Stanford Hospital），PadChest 数据收集于西班牙圣胡医院（San Juan Hospital），NIH ChestX-ray 和 CheXDet10 数据来自于美国国立卫生研究院（National Institutes of Health）临床 PACS 数据库。</p><p><strong>KAD 零样本诊断能力与专业放射科医生精度相当</strong> </p><p>如图 2 所示，该研究将预训练的 KAD 模型在 CheXpert 数据上进行评测，在其中的五类疾病诊断任务与放射科医生进行了比较，图中 Radiologists 表示三名放射科医生的平均结果。KAD 在五类疾病诊断任务上的平均 MCC 超过了 Radiologists，且在其中三类疾病的诊断结果显著优于放射科医生，肺不张 atelectasis (KAD 0.613 (95% CI 0.567, 0.659) vs. Radiologists 0.548)；肺水肿 edema (KAD 0.666 (95% CI 0.608, 0.724) vs. Radiologists 0.507)；胸腔积液 pleural effusion (KAD 0.702 (95% CI 0.653, 0.751) vs. Radiologists 0.548)。该结果证实了基于知识增强的模型预训练的有效性。</p><p><img src="/./images/Medical_AI/3.PNG"></p><p><strong>KAD 零样本诊断能力与全监督模型相当，支持开放集疾病诊断</strong> </p><p>如图 3a 所示，在 PadChest 上的零样本诊断性能大幅度超越此前所有多模态预训练模型（例如 Microsoft 发布的 BioVIL [6]，Stanford 发布的 CheXzero [7]），与全监督模型 (CheXNet [8]) 相当。此外，全监督的模型的应用范围受限于封闭的训练类别集合，而 KAD 可以支持任意的疾病输入，在 PadChest 的 177 个未见类别的测试中，有 31 类 AUC 达到 0.900 以上，111 类 AUC 达到 0.700 以上，如图 3b 所示。</p><p><img src="/./images/Medical_AI/1.PNG"></p><p><strong>KAD 具有疾病定位能力，为模型预测提供可解释性</strong> </p><p>除了自动诊断能力，可解释性在人工智能辅助医疗的作用同样关键，能够有效帮助临床医生理解人工智能算法的判断依据。在 ChestXDet10 数据集上对 KAD 的定位能力进行了定量分析与定性分析。如图 4 所示，KAD 的定位能力显著优于基线模型。图 5 中，红色方框为放射科医生提供的标注，高亮区域为模型的热力图，从中可以看出模型所关注的区域往往能与医生标注区域对应上，随着输入图像的分辨率增加，模型的定位能力也显著增强。需要强调 这是模型设计的优势，是在无需人工病灶区域标注情况下获得的副产品。</p><p><img src="/./images/Medical_AI/4.PNG"></p><p><img src="/./images/Medical_AI/5.PNG"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 预训练大模型 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Medical AI </tag>
+            
+            <tag> GPT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Socket两台主机通信</title>
       <link href="/2023/06/12/socket-liang-tai-zhu-ji-tong-xin/"/>
       <url>/2023/06/12/socket-liang-tai-zhu-ji-tong-xin/</url>
