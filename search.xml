@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>YOLOv9</title>
+      <link href="/2024/02/23/yolov9/"/>
+      <url>/2024/02/23/yolov9/</url>
+      
+        <content type="html"><![CDATA[<h3 id="YOLOv9-Learning-What-You-Want-to-Learn-Using-Programmable-Gradient-Information"><a href="#YOLOv9-Learning-What-You-Want-to-Learn-Using-Programmable-Gradient-Information" class="headerlink" title="YOLOv9: Learning What You Want to Learn Using Programmable Gradient Information"></a>YOLOv9: Learning What You Want to Learn Using Programmable Gradient Information</h3><h3 id="资源信息"><a href="#资源信息" class="headerlink" title="资源信息"></a>资源信息</h3><blockquote><ul><li><a href="https://arxiv.org/pdf/2402.13616.pdf">Paper</a></li><li><a href="https://github.com/WongKinYiu/yolov9">Code</a></li></ul></blockquote><h3 id="主要贡献"><a href="#主要贡献" class="headerlink" title="主要贡献"></a>主要贡献</h3><p>如今的深度学习方法重点关注如何设计最合适的目标函数，从而使得模型的预测结果能够最接近真实情况。同时，必须设计一个适当的架构，可以帮助获取足够的信息进行预测。然而，现有方法忽略了一个事实，即当输入数据经过逐层特征提取和空间变换时，大量信息将会丢失。因此，YOLOv9 深入研究了数据通过深度网络传输时数据丢失的重要问题，即信息瓶颈和可逆函数。</p><p>研究者提出了<code>可编程梯度信息（programmable gradient information，PGI）</code>的概念，来应对深度网络实现多个目标所需要的各种变化。PGI 可以为目标任务计算目标函数提供完整的输入信息，从而获得可靠的梯度信息来更新网络权值。</p><p>此外，研究者基于梯度路径规划设计了一种新的轻量级网络架构，即<code>通用高效层聚合网络（Generalized Efficient Layer Aggregation Network，GELAN）</code>。该架构证实了 PGI 可以在轻量级模型上取得优异的结果。</p><h4 id="PGI"><a href="#PGI" class="headerlink" title="PGI"></a><strong>PGI</strong></h4><p>PGI 主要包括三个部分，即（1）主分支，（2）辅助可逆分支，（3）多级辅助信息。</p><ul><li><p>PGI 的推理过程仅使用了主分支，因此不需要额外的推理成本；</p></li><li><p>辅助可逆分支是为了处理神经网络加深带来的问题， 网络加深会造成信息瓶颈，导致损失函数无法生成可靠的梯度；</p></li><li><p>多级辅助信息旨在处理深度监督带来的误差累积问题，特别是多个预测分支的架构和轻量级模型。</p></li></ul><h4 id="GELN"><a href="#GELN" class="headerlink" title="GELN"></a><strong>GELN</strong></h4><p>GELAN网络架构如下图所示，具体而言，研究者把 CSPNet、 ELAN 这两种神经网络架构结合起来，从而设计出兼顾轻量级、推理速度和准确性的通用高效层聚合网络（generalized efficient layer aggregation network ，GELAN）。研究者将最初仅使用卷积层堆叠的 ELAN 的功能泛化到可以使用任何计算块的新架构。</p><p><img src="/./images/Computer_Vision/31.png" alt="GELAN"></p><p>研究者在基于 MS COCO 数据集的目标检测任务上验证所提出的 GELAN 和 PGI。结果表明，与基于深度卷积开发的 SOTA 方法相比，GELAN 仅使用传统卷积算子即可实现更好的参数利用率。</p><h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p>研究者探讨了信息瓶颈问题，并将其进行了可视化处理，下图显示了在不同架构下使用随机初始权重作为前馈获得的特征图的可视化结果。</p><p><img src="/./images/Computer_Vision/32.png" alt="可视化结果"></p><p>跟进一步下图说明了 PGI 能否在训练过程中提供更可靠的梯度，从而使用于更新的参数能够有效捕捉输入数据与目标之间的关系。</p><p><img src="/./images/Computer_Vision/33.png" alt="PAN特征图"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Computer Vision </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Semantic Segmentation </tag>
+            
+            <tag> Object Detection </tag>
+            
+            <tag> Panoptic Segmentation </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SegMiF</title>
       <link href="/2023/08/29/segmif/"/>
       <url>/2023/08/29/segmif/</url>
