@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>UltraLight VM-UNet</title>
+      <link href="/2024/05/07/ultralight-vm-unet/"/>
+      <url>/2024/05/07/ultralight-vm-unet/</url>
+      
+        <content type="html"><![CDATA[<h3 id="UltraLight-VM-UNet-Parallel-Vision-Mamba-Significantly-Reduces-Parameters-for-Skin-Lesion-Segmentation"><a href="#UltraLight-VM-UNet-Parallel-Vision-Mamba-Significantly-Reduces-Parameters-for-Skin-Lesion-Segmentation" class="headerlink" title="UltraLight VM-UNet: Parallel Vision Mamba Significantly Reduces Parameters for Skin Lesion Segmentation"></a>UltraLight VM-UNet: Parallel Vision Mamba Significantly Reduces Parameters for Skin Lesion Segmentation</h3><h3 id="资源信息"><a href="#资源信息" class="headerlink" title="资源信息"></a>资源信息</h3><blockquote><ul><li><a href="https://arxiv.org/pdf/2403.20035.pdf">Paper</a></li><li><a href="https://github.com/wurenkai/UltraLight-VM-UNet">Code</a></li></ul></blockquote><h3 id="主要贡献"><a href="#主要贡献" class="headerlink" title="主要贡献"></a>主要贡献</h3><p>皮肤病灶分割是医学图像分割的一个重要领域，也是许多研究人员投入大量精力的研究方向之一。皮肤病灶分割具有丰富多样的特征信息和高度致命性，这引起了许多研究人员对其进行了一系列研究。在 U-Net 之后，皮肤病灶分割领域出现了许多基于 U-Net 的模型，如SCR-Net、ATTENTION SWIN U-NET、CSDG、VM-UNet、VM-UNet v2、MALUNet、LightM-UNet 和 EGE-UNet。这些模型通过在模型中添加更多的模块来提高识别准确性，但这也会显著增加模型的参数和计算复杂度。随着 Vision Mamba 的出现，LightM-UNet 被提出，以减少模型中的参数。然而，这些模型的参数仍然很大，限制了它们在实际临床环境中的应用。</p><p>为了解决当前模型参数过大的问题，并揭示影响 Mamba 参数的关键因素，本文提出了一种基于 Mamba 的超轻量级 Vision Mamba UNet 模型（UltraLight VM-UNet），该模型的参数仅为 0.049M。该模型在三个公共皮肤病灶分割数据集上表现出了强大的竞争力。</p><p><img src="/./images/Computer_Vision/34.png" alt="UltraLight VM-UNet"><br><img src="/./images/Computer_Vision/35.png" alt=" Parallel Vision Mamba Layer"></p><h4 id="轻量化设计"><a href="#轻量化设计" class="headerlink" title="轻量化设计"></a><strong>轻量化设计</strong></h4><p>为了解决医疗领域尤其是移动医疗设备中计算资源有限的问题，研究者深度探索了Mamba模型中影响参数的关键因素，并基于此提出了UltraLight VM-UNet。该模型特别设计用于在保持较低计算复杂度的同时，实现高性能的图像分割。</p><h4 id="并行视觉曼巴层-PVM-Layer"><a href="#并行视觉曼巴层-PVM-Layer" class="headerlink" title="并行视觉曼巴层(PVM Layer)"></a><strong>并行视觉曼巴层(PVM Layer)</strong></h4><p>提出了一种新颖的处理特征方法，即PVM Layer。该层通过并行使用四个Vision Mamba(VM)单元来处理特征，每个单元处理初始通道数的四分之一，从而大幅降低了参数量。每个VM处理四分之一通道数的参数仅为原始VM参数的6.3%，实现了参数量的爆炸性减少（93.7%减少）。</p><h4 id="高效参数与计算量减少"><a href="#高效参数与计算量减少" class="headerlink" title="高效参数与计算量减少"></a><strong>高效参数与计算量减少</strong></h4><p>UltraLight VM-UNet仅拥有0.049M的参数量和0.060 GFLOPs的计算量，相比传统纯Vision Mamba UNet模型，参数量减少了99.82%，相比当前最轻量级的Vision Mamba UNet模型(LightM-UNet)，参数量也减少了87.84%。这表明模型在极低参数要求下仍能保持高性能。</p><h4 id="优异的性能表现"><a href="#优异的性能表现" class="headerlink" title="优异的性能表现"></a><strong>优异的性能表现</strong></h4><p>在三个公开的皮肤病变数据集上进行的实验表明，尽管参数量极低，UltraLight VM-UNet仍展现出与其他最先进轻量级模型相当的强竞争力，证明了其在实际应用中的潜力。</p><h4 id="模块化与兼容性"><a href="#模块化与兼容性" class="headerlink" title="模块化与兼容性"></a><strong>模块化与兼容性</strong></h4><p>PVM Layer具有强大的即插即用能力，可简单替换任何模型的基本构建块（包括但不限于卷积、视觉变换器、Mamba、视觉Mamba等），在减少参数和计算量的同时，还能保持或提升模型性能。这对于现有模型的轻量化改造具有重要意义。</p><h4 id="理论基础构建"><a href="#理论基础构建" class="headerlink" title="理论基础构建"></a><strong>理论基础构建</strong></h4><p>通过对Mamba关键参数影响因素的深入分析，为Mamba未来可能成为轻量化建模主流模块奠定了理论基础。</p><p>综上所述，UltraLight VM-UNet及其PVM Layer的设计，不仅极大减轻了模型的参数负担，还保持了高效的分割性能，为医疗图像处理特别是资源受限环境下的应用提供了新的解决方案。</p><h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p><img src="/./images/Computer_Vision/36.png" alt="实验结果对比"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Computer Vision </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Model Compression </tag>
+            
+            <tag> Pathology Segmentation </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>YOLOv9</title>
       <link href="/2024/02/23/yolov9/"/>
       <url>/2024/02/23/yolov9/</url>
