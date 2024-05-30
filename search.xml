@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>FusionMamba</title>
+      <link href="/2024/05/30/fusionmamba/"/>
+      <url>/2024/05/30/fusionmamba/</url>
+      
+        <content type="html"><![CDATA[<h3 id="FusionMamba-Dynamic-Feature-Enhancement-for-Multimodal-Image-Fusion-with-Mamba"><a href="#FusionMamba-Dynamic-Feature-Enhancement-for-Multimodal-Image-Fusion-with-Mamba" class="headerlink" title="FusionMamba: Dynamic Feature Enhancement for Multimodal Image Fusion with Mamba"></a>FusionMamba: Dynamic Feature Enhancement for Multimodal Image Fusion with Mamba</h3><h3 id="资源信息"><a href="#资源信息" class="headerlink" title="资源信息"></a>资源信息</h3><blockquote><ul><li><a href="https://arxiv.org/pdf/2404.09498.pdf">Paper</a></li><li><a href="https://github.com/millieXie/FusionMamba">Code</a></li></ul></blockquote><h3 id="全文摘要"><a href="#全文摘要" class="headerlink" title="全文摘要"></a>全文摘要</h3><p>本文介绍了一种名为FusionMamba的新型动态特征增强方法，用于多模态图像融合。传统的卷积神经网络模型在捕捉全局图像特征时存在局限性，而基于Transformer的模型则面临着计算复杂度高的问题。因此，作者提出了一个基于高效视觉状态空间模型、动态卷积和通道注意力的改进型Mamba模型，并结合两个动态特征增强模块和一个跨模态融合Mamba模块，实现了对不同模式信息的有效融合。实验结果表明，该模型在多种医疗图像融合任务、红外与可见光图像融合任务以及生物医学图像融合数据集上均取得了最先进的性能，并具有良好的泛化能力。</p><h3 id="论文方法"><a href="#论文方法" class="headerlink" title="论文方法"></a>论文方法</h3><h4 id="方法描述"><a href="#方法描述" class="headerlink" title="方法描述"></a><strong>方法描述</strong></h4><p>该论文提出了一种新的动态特征增强模型（Dynamic Feature Enhancement Model），用于解决多模态图像融合中的挑战和问题。该模型包括三个关键组件：特征提取、特征融合和特征重建。网络架构基于Unet框架，并引入了设计的动态视觉状态空间模块（Dynamic Vision State Space）来有效地提取更深层次的特征。此外，还使用了动态特征增强模块（Dynamic Feature Enhancement Module）和跨模态融合Mamba模块（Cross Modality Fusion Mamba）来进行细粒度的融合和探索不同模态之间的信息相关性。</p><h4 id="方法改进"><a href="#方法改进" class="headerlink" title="方法改进"></a><strong>方法改进</strong></h4><p>与传统的卷积神经网络（CNNs）和Transformer模型相比，该模型在全局建模方面具有优势，并且具有更高的计算效率。同时，它能够更好地捕捉局部特征和跨模态关系，从而提高融合性能。</p><h4 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a><strong>解决的问题</strong></h4><p>该模型解决了当前多模态图像融合中存在的局限性和不足之处，如静态卷积层无法捕捉细微的空间差异和全局上下文信息，Transformer模型在图像大小上的二次复杂度限制了其计算效率等。通过引入动态特征增强模块和跨模态融合Mamba模块，该模型可以更好地探索内部特征和跨模态关系，提高融合性能。</p><h3 id="论文实验"><a href="#论文实验" class="headerlink" title="论文实验"></a>论文实验</h3><p>本文主要介绍了多模态图像融合的方法——FusionMamba，并通过多个对比实验来验证其有效性。具体来说，本文进行了以下对比实验：</p><ul><li><p>多模态医学图像融合任务的比较实验，包括CT-MRI、PET-MRI和SPECT-MRI三种任务。该实验使用了六个关键指标（SF、SCD、MS-SSIM、QAB&#x2F;F、FMI和VIF）来评估不同方法的性能。结果表明，FusionMamba在所有任务中都取得了最优的结果，具有更高的结构相似度、增强的对比度和更好的视觉效果。</p></li><li><p>红外和可见光图像融合任务的比较实验。该实验比较了RFN-Nest、DATFuse、SDNet、U2Fusion、IFT和SwinFusion等方法的性能。结果表明，FusionMamba能够更好地保留场景信息和显著物体的信息，具有更准确的全局上下文感知和动态特征增强能力。</p></li><li><p>多模态生物医学图像融合任务的比较实验，包括GFP和PC两种类型的图像。该实验比较了FusionGAN、U2Fusion、IFT、SwinFusion等方法的性能。结果表明，FusionMamba能够有效地保留纹理和颜色信息，证明了跨模式融合策略的有效性。</p></li><li><p>计算效率分析实验，比较了FusionMamba与主流图像融合算法之间的计算复杂度。结果表明，FusionMamba具有更低的浮点运算次数和平均运行时间，展现了较高的运行效率。</p></li></ul><p>此外，本文还进行了结构和损失函数的Ablation实验，以进一步分析网络架构和损失函数对性能的影响。这些实验结果进一步证实了FusionMamba的有效性和优越性。</p><h3 id="论文总结"><a href="#论文总结" class="headerlink" title="论文总结"></a>论文总结</h3><h4 id="文章优点"><a href="#文章优点" class="headerlink" title="文章优点"></a><strong>文章优点</strong></h4><p>该论文提出了一种新的动态特征增强模型——FusionMamba，用于多模态图像融合任务。该模型结合了改进的Mamba框架、动态卷积和通道注意力等技术，增强了全局建模能力和局部特征提取能力，并且有效地提高了纹理、感知差异和跨模态关联性，同时抑制冗余信息。实验结果表明，该方法在各种多模态图像融合任务中表现出色，验证了其通用性和有效性。 此外，该论文还介绍了一种动态特征融合模块（DFFM），包括两个动态特征增强模块（DFEM）和一个跨模态融合Mamba模块（CMFM）。该模块能够有效提高细节纹理信息和差异信息的表达能力，促进不同模态之间的信息交互，进一步提升了图像融合的效果。</p><h4 id="方法创新点"><a href="#方法创新点" class="headerlink" title="方法创新点"></a><strong>方法创新点</strong></h4><ul><li><p>结合了Mamba框架：该框架具有高效的长程依赖建模能力和并行计算能力，在处理大规模数据时具有优势。</p></li><li><p>引入了动态卷积和通道注意力：这些技术可以动态地调整卷积核大小和权重，从而更好地捕捉局部特征和减少冗余信息。</p></li><li><p>设计了动态特征融合模块：该模块能够动态地增强细节纹理信息和差异信息，促进不同模态之间的信息交互，提升图像融合效果。</p></li></ul><h3 id="未来展望"><a href="#未来展望" class="headerlink" title="未来展望"></a>未来展望</h3><ul><li>应用范围扩展：将FusionMamba应用于更多领域的图像融合任务，如遥感图像融合、多光谱图像融合等。</li><li>资源受限设备部署：探索如何将FusionMamba部署到资源受限的设备上，以实现更广泛的应用场景。</li><li>模型优化：继续优化FusionMamba模型结构，提高其性能和效率，以满足实际应用的需求。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Computer Vision </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Image Fusion </tag>
+            
+            <tag> State Space Model </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>StarNet</title>
       <link href="/2024/05/14/starsnet/"/>
       <url>/2024/05/14/starsnet/</url>
